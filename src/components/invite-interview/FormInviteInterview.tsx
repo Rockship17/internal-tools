@@ -5,7 +5,7 @@ import { MailOutlined, UserOutlined, CalendarOutlined } from "@ant-design/icons"
 export default function FormInviteInterview() {
     const [form] = Form.useForm();
     const [loading, setLoading] = useState(false);
-    const onSubmit = async (values) => {
+    const onSubmit = async (values: any) => {
         setLoading(true);
         try {
             const formData = new FormData();
