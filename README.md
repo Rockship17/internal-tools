@@ -1,36 +1,111 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Internal Tools
+
+A Next.js application for internal company tools and resources management.
+
+## Features
+
+- Modern React with Next.js 13+
+- TypeScript for type safety
+- Tailwind CSS for styling
+- Radix UI for accessible components
+- Global state management with Context API
+- Type-safe API calls with custom hooks
+- Dark/Light theme support
+
+## Project Structure
+
+```
+src/
+├── app/           # Next.js app directory
+├── components/    # Reusable UI components
+├── contexts/      # React Context providers
+├── hooks/         # Custom React hooks
+├── lib/          # Third-party library configurations
+├── types/        # TypeScript type definitions
+├── utils/        # Utility functions
+└── constants/    # Application constants
+```
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
 
+- Node.js 18+
+- npm or yarn
+
+### Installation
+
+1. Clone the repository:
+```bash
+git clone [repository-url]
+```
+
+2. Install dependencies:
+```bash
+npm install
+# or
+yarn install
+```
+
+3. Create a `.env.local` file in the root directory:
+```env
+NEXT_PUBLIC_API_BASE_URL=http://localhost:3000/api
+NEXT_PUBLIC_APP_VERSION=0.1.0
+```
+
+4. Start the development server:
 ```bash
 npm run dev
 # or
 yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Development
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Code Style
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- We use ESLint and Prettier for code formatting
+- Follow TypeScript best practices
+- Use functional components with hooks
+- Write meaningful component and function names
+- Add JSDoc comments for complex functions
 
-## Learn More
+### Best Practices
 
-To learn more about Next.js, take a look at the following resources:
+1. **State Management**
+   - Use local state for component-specific data
+   - Use Context for global state
+   - Avoid prop drilling
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+2. **Performance**
+   - Use React.memo for expensive components
+   - Implement proper dependency arrays in useEffect
+   - Lazy load components when possible
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+3. **Error Handling**
+   - Use try/catch blocks for async operations
+   - Implement proper error boundaries
+   - Display user-friendly error messages
 
-## Deploy on Vercel
+4. **Testing**
+   - Write unit tests for utilities
+   - Write integration tests for components
+   - Test error scenarios
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Available Scripts
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm start` - Start production server
+- `npm run lint` - Run ESLint
+
+## Contributing
+
+1. Create a feature branch
+2. Make your changes
+3. Run tests and linting
+4. Submit a pull request
+
+## License
+
+This project is private and confidential.
