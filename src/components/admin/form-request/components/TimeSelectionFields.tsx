@@ -36,7 +36,7 @@ export function TimeSelectionFields({
                 <FormControl>
                   <DatePicker
                     date={field.value}
-                    onSelect={(date) => {
+                    onSelect={(date: any) => {
                       field.onChange(date)
                       calculateDuration("single", date)
                     }}
@@ -88,7 +88,7 @@ export function TimeSelectionFields({
                 <RangePicker
                   showTime={showTimePicker}
                   dateRange={field.value}
-                  onRangeChange={(range) => {
+                  onRangeChange={(range: any) => {
                     field.onChange(range)
                     calculateDuration("range", undefined, range)
                   }}

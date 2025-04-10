@@ -116,7 +116,7 @@ export function RequestHistory() {
           <TableBody>
             {filteredRequests.map((request) => (
               <TableRow key={request.id}>
-                <TableCell>{requestTypes[request.type]}</TableCell>
+                <TableCell>{requestTypes[request.type as keyof typeof requestTypes]}</TableCell>
                 <TableCell>
                   {format(request.startDate, "dd/MM/yyyy")}
                   {" - "}

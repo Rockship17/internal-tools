@@ -1,12 +1,5 @@
-import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { RequestTable } from "@/components/admin/requests/RequestTable"
 import { Search } from "lucide-react"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -16,9 +9,7 @@ export default function RequestsPage() {
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-semibold">Duyệt đơn từ</h1>
-        <p className="text-gray-500 mt-1">
-          Quản lý và duyệt các yêu cầu nghỉ phép và làm việc từ xa.
-        </p>
+        <p className="text-gray-500 mt-1">Quản lý và duyệt các yêu cầu nghỉ phép và làm việc từ xa.</p>
       </div>
 
       <Tabs defaultValue="all">
@@ -32,10 +23,7 @@ export default function RequestsPage() {
           <div className="flex items-center gap-3">
             <div className="relative w-[300px]">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
-              <Input
-                placeholder="Tìm theo tên..."
-                className="pl-9"
-              />
+              <Input placeholder="Tìm theo tên..." className="pl-9" />
             </div>
             <Select defaultValue="all">
               <SelectTrigger className="w-[180px]">
@@ -63,4 +51,4 @@ export default function RequestsPage() {
       </Tabs>
     </div>
   )
-} 
+}

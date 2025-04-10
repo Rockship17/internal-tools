@@ -1,6 +1,5 @@
 import { useState, useCallback } from 'react';
 import { ApiError, api } from '@/utils/api';
-import { ApiResponse } from '@/types';
 
 interface UseApiState<T> {
   data: T | null;
@@ -23,14 +22,14 @@ export function useApi<T>() {
     body?: Record<string, unknown>
   ) => {
     setState(prev => ({ ...prev, loading: true, error: null }));
-    
+
     try {
       const response = await api[method]<T>(endpoint, body);
       setState({ data: response.data, loading: false, error: null });
       return response;
     } catch (error) {
-      const apiError = error instanceof ApiError 
-        ? error 
+      const apiError = error instanceof ApiError
+        ? error
         : new Error('An unexpected error occurred');
       setState(prev => ({ ...prev, loading: false, error: apiError }));
       throw apiError;

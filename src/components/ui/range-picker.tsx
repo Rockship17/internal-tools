@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { addDays, format } from "date-fns"
+import { format } from "date-fns"
 import { CalendarIcon } from "lucide-react"
 import { DateRange } from "react-day-picker"
 
@@ -11,25 +11,32 @@ import { Calendar } from "@/components/ui/calendar"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { TimePicker } from "@/components/ui/time-picker"
 
-export function RangePicker({ className, showTime = false }: { className?: string; showTime?: boolean }) {
-  const [dateRange, setDateRange] = React.useState<DateRange | undefined>({
-    from: new Date(),
-    to: addDays(new Date(), 7),
-  })
+export function RangePicker({
+  className,
+  showTime = false,
+  dateRange,
+  onRangeChange,
+}: {
+  className?: string
+  showTime?: boolean
+  dateRange: DateRange | undefined
+  onRangeChange: (dateRange: DateRange) => void
+}) {
+  const [dateRangeState, setDateRangeState] = React.useState<DateRange | undefined>(dateRange)
 
   const handleFromTimeChange = (date: Date | undefined) => {
-    if (date && dateRange) {
-      setDateRange({
-        ...dateRange,
+    if (date && dateRangeState) {
+      setDateRangeState({
+        ...dateRangeState,
         from: date,
       })
     }
   }
 
   const handleToTimeChange = (date: Date | undefined) => {
-    if (date && dateRange) {
-      setDateRange({
-        ...dateRange,
+    if (date && dateRangeState) {
+      setDateRangeState({
+        ...dateRangeState,
         to: date,
       })
     }
@@ -63,20 +70,23 @@ export function RangePicker({ className, showTime = false }: { className?: strin
           <Calendar
             initialFocus
             mode="range"
-            defaultMonth={dateRange?.from}
-            selected={dateRange}
-            onSelect={setDateRange}
+            defaultMonth={dateRangeState?.from}
+            selected={dateRangeState}
+            onSelect={(range) => {
+              setDateRangeState(range)
+              if (range?.from && range?.to) onRangeChange(range)
+            }}
             numberOfMonths={2}
           />
           {showTime && (
             <div className="border-t p-3 space-y-3">
               <div>
                 <div className="text-sm font-medium mb-2">Start Time</div>
-                <TimePicker date={dateRange?.from} setDate={handleFromTimeChange} />
+                <TimePicker date={dateRangeState?.from} setDate={handleFromTimeChange} />
               </div>
               <div>
                 <div className="text-sm font-medium mb-2">End Time</div>
-                <TimePicker date={dateRange?.to} setDate={handleToTimeChange} />
+                <TimePicker date={dateRangeState?.to} setDate={handleToTimeChange} />
               </div>
             </div>
           )}
