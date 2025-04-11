@@ -10,37 +10,37 @@ const activities: Activity[] = [
   {
     id: 1,
     type: "leave_request",
-    title: "Yêu cầu nghỉ phép mới",
-    description: "Nguyễn Văn A đã gửi yêu cầu nghỉ phép từ 15/04 đến 17/04",
-    time: "5 phút trước"
+    title: "New Leave Request",
+    description: "Nguyen Van A has submitted a leave request from 15/04 to 17/04",
+    time: "5 minutes ago"
   },
   {
     id: 2,
     type: "remote_request",
-    title: "Duyệt yêu cầu làm từ xa",
-    description: "Admin đã duyệt yêu cầu làm từ xa của Trần Thị B vào ngày 16/04",
-    time: "30 phút trước"
+    title: "Remote Work Request Approved",
+    description: "Admin has approved Tran Thi B's remote work request for 16/04",
+    time: "30 minutes ago"
   },
   {
     id: 3,
     type: "request_rejected",
-    title: "Từ chối yêu cầu",
-    description: "Admin đã từ chối yêu cầu nghỉ phép của Phan Văn C",
-    time: "1 giờ trước"
+    title: "Request Rejected",
+    description: "Admin has rejected Phan Van C's leave request",
+    time: "1 hour ago"
   },
   {
     id: 4,
     type: "new_employee",
-    title: "Nhân viên mới",
-    description: "Lê Văn D đã được thêm vào hệ thống",
-    time: "2 giờ trước"
+    title: "New Employee",
+    description: "Le Van D has been added to the system",
+    time: "2 hours ago"
   },
   {
     id: 5,
     type: "attendance",
-    title: "Điểm danh",
-    description: "Có 45/50 nhân viên đã điểm danh hôm nay",
-    time: "3 giờ trước"
+    title: "Attendance",
+    description: "45/50 employees have checked in today",
+    time: "3 hours ago"
   }
 ]
 

@@ -12,21 +12,21 @@ export function RequestTypeField({ form }: RequestTypeFieldProps) {
     <FormField
       control={form.control}
       name="requestType"
-      rules={{ required: "Vui lòng chọn loại đơn" }}
+      rules={{ required: "Please select request type" }}
       render={({ field }) => (
         <FormItem>
-          <FormLabel>Loại đơn *</FormLabel>
+          <FormLabel>Request Type *</FormLabel>
           <Select onValueChange={field.onChange} defaultValue={field.value}>
             <FormControl>
               <SelectTrigger>
-                <SelectValue placeholder="Chọn loại đơn" />
+                <SelectValue placeholder="Select request type" />
               </SelectTrigger>
             </FormControl>
             <SelectContent>
-              <SelectItem value={REQUEST_TYPES.LEAVE}>Nghỉ phép</SelectItem>
-              <SelectItem value={REQUEST_TYPES.REMOTE}>Làm việc từ xa</SelectItem>
-              <SelectItem value={REQUEST_TYPES.DELAYED_ARRIVAL}>Đến muộn</SelectItem>
-              <SelectItem value={REQUEST_TYPES.EARLY_DISMISSAL}>Về sớm</SelectItem>
+              <SelectItem value={REQUEST_TYPES.LEAVE}>Leave</SelectItem>
+              <SelectItem value={REQUEST_TYPES.REMOTE}>Remote Work</SelectItem>
+              <SelectItem value={REQUEST_TYPES.DELAYED_ARRIVAL}>Late Arrival</SelectItem>
+              <SelectItem value={REQUEST_TYPES.EARLY_DISMISSAL}>Early Leave</SelectItem>
             </SelectContent>
           </Select>
           <FormMessage />

@@ -89,21 +89,21 @@ export function RequestForm() {
             <FormField
               control={form.control}
               name="timeOffType"
-              rules={{ required: "Vui lòng chọn hình thức nghỉ" }}
+              rules={{ required: "Please select time off type" }}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Hình thức nghỉ *</FormLabel>
+                  <FormLabel>Time Off Type *</FormLabel>
                   <Select onValueChange={field.onChange} defaultValue={field.value}>
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue placeholder="Chọn hình thức nghỉ" />
+                        <SelectValue placeholder="Select time off type" />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      <SelectItem value={TIME_OFF_TYPES.BY_DAY}>Nghỉ cả ngày</SelectItem>
-                      <SelectItem value={TIME_OFF_TYPES.MORNING}>Nghỉ buổi sáng</SelectItem>
-                      <SelectItem value={TIME_OFF_TYPES.AFTERNOON}>Nghỉ buổi chiều</SelectItem>
-                      <SelectItem value={TIME_OFF_TYPES.BY_HOUR}>Nghỉ theo giờ</SelectItem>
+                      <SelectItem value={TIME_OFF_TYPES.BY_DAY}>Full Day</SelectItem>
+                      <SelectItem value={TIME_OFF_TYPES.MORNING}>Morning</SelectItem>
+                      <SelectItem value={TIME_OFF_TYPES.AFTERNOON}>Afternoon</SelectItem>
+                      <SelectItem value={TIME_OFF_TYPES.BY_HOUR}>By Hour</SelectItem>
                     </SelectContent>
                   </Select>
                   <FormMessage />
@@ -116,21 +116,21 @@ export function RequestForm() {
             <FormField
               control={form.control}
               name="remoteType"
-              rules={{ required: "Vui lòng chọn hình thức làm việc từ xa" }}
+              rules={{ required: "Please select remote work type" }}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Hình thức làm việc từ xa *</FormLabel>
+                  <FormLabel>Remote Work Type *</FormLabel>
                   <Select onValueChange={field.onChange} defaultValue={field.value}>
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue placeholder="Chọn hình thức làm việc từ xa" />
+                        <SelectValue placeholder="Select remote work type" />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      <SelectItem value={REMOTE_TYPES.FULL_DAY}>Cả ngày</SelectItem>
-                      <SelectItem value={REMOTE_TYPES.MORNING}>Buổi sáng</SelectItem>
-                      <SelectItem value={REMOTE_TYPES.AFTERNOON}>Buổi chiều</SelectItem>
-                      <SelectItem value={REMOTE_TYPES.BY_HOUR}>Theo giờ</SelectItem>
+                      <SelectItem value={REMOTE_TYPES.FULL_DAY}>Full Day</SelectItem>
+                      <SelectItem value={REMOTE_TYPES.MORNING}>Morning</SelectItem>
+                      <SelectItem value={REMOTE_TYPES.AFTERNOON}>Afternoon</SelectItem>
+                      <SelectItem value={REMOTE_TYPES.BY_HOUR}>By Hour</SelectItem>
                     </SelectContent>
                   </Select>
                   <FormMessage />
@@ -152,13 +152,13 @@ export function RequestForm() {
             name="duration"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>{showTimePicker ? "Số giờ" : "Số ngày"}</FormLabel>
+                <FormLabel>{showTimePicker ? "Hours" : "Days"}</FormLabel>
                 <FormControl>
                   <Input
                     {...field}
                     disabled
-                    placeholder="Tự động tính"
-                    value={field.value ? `${field.value} ${showTimePicker ? "giờ" : "ngày"}` : ""}
+                    placeholder="Auto-calculated"
+                    value={field.value ? `${field.value} ${showTimePicker ? "hours" : "days"}` : ""}
                   />
                 </FormControl>
                 <FormMessage />
@@ -169,12 +169,12 @@ export function RequestForm() {
           <FormField
             control={form.control}
             name="reason"
-            rules={{ required: "Vui lòng nhập lý do" }}
+            rules={{ required: "Please enter reason" }}
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Lý do *</FormLabel>
+                <FormLabel>Reason *</FormLabel>
                 <FormControl>
-                  <Textarea placeholder="Nhập lý do..." className="resize-none" {...field} />
+                  <Textarea placeholder="Enter reason..." className="resize-none" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -183,10 +183,10 @@ export function RequestForm() {
 
           <div className="flex justify-end gap-4">
             <Button variant="outline" type="reset">
-              Hủy
+              Cancel
             </Button>
             <Button type="submit" disabled={isSubmitting}>
-              {isSubmitting ? "Đang gửi..." : "Gửi đơn"}
+              {isSubmitting ? "Submitting..." : "Submit Request"}
             </Button>
           </div>
         </form>

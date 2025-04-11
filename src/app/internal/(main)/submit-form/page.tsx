@@ -6,16 +6,26 @@ import { RequestHistory } from "@/components/admin/form-request/RequestHistory"
 
 export default function SubmitFormPage() {
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 bg-white rounded-lg border p-6">
       <div>
-        <h1 className="text-2xl font-semibold">Đơn từ</h1>
-        <p className="text-gray-500 mt-1">Gửi yêu cầu nghỉ phép và xem lịch sử các đơn đã gửi.</p>
+        <h1 className="text-2xl font-semibold">Submit Form</h1>
+        <p className="text-gray-500 mt-1">Send leave request and view history of submitted requests.</p>
       </div>
 
       <Tabs defaultValue="submit" className="space-y-6">
-        <TabsList>
-          <TabsTrigger value="submit">Gửi đơn</TabsTrigger>
-          <TabsTrigger value="history">Lịch sử</TabsTrigger>
+        <TabsList className="w-full">
+          <TabsTrigger
+            value="submit"
+            className="flex-1 lg:flex-none data-[state=active]:bg-white data-[state=active]:shadow-sm"
+          >
+            Submit
+          </TabsTrigger>
+          <TabsTrigger
+            value="history"
+            className="flex-1 lg:flex-none data-[state=active]:bg-white data-[state=active]:shadow-sm"
+          >
+            History
+          </TabsTrigger>
         </TabsList>
 
         <TabsContent value="submit">

@@ -36,7 +36,7 @@ export default function CheckInPage() {
 
       const { latitude, longitude } = position.coords
 
-      console.log("Vị trí hiện tại của bạn:", {
+      console.log("Your current location:", {
         latitude,
         longitude,
         accuracy: position.coords.accuracy,
@@ -44,16 +44,16 @@ export default function CheckInPage() {
       })
 
       const distance = calculateDistance(latitude, longitude, COMPANY_LOCATION.latitude, COMPANY_LOCATION.longitude)
-      console.log("Khoảng cách đến công ty:", Math.round(distance), "mét")
+      console.log("Distance to company:", Math.round(distance), "meters")
 
       if (distance <= MAX_DISTANCE) {
-        message.success("Check-in thành công! Bạn đang ở trong khu vực công ty.")
+        message.success("Check-in successful! You are within the company area.")
       } else {
-        message.error("Không thể check-in! Bạn đang ở quá xa công ty.")
+        message.error("Cannot check-in! You are too far from the company.")
       }
     } catch (error) {
-      console.error("Lỗi khi lấy vị trí:", error)
-      message.error("Không thể lấy vị trí của bạn. Vui lòng kiểm tra quyền truy cập vị trí.")
+      console.error("Error getting location:", error)
+      message.error("Cannot get your location. Please check location permissions.")
     } finally {
       setIsChecking(false)
     }
@@ -62,10 +62,10 @@ export default function CheckInPage() {
   return (
     <div className="flex min-h-screen flex-col items-center justify-center p-4">
       <div className="w-full max-w-md rounded-lg bg-white p-6 shadow-lg">
-        <h1 className="mb-6 text-center text-2xl font-bold text-gray-900">Điểm Danh</h1>
+        <h1 className="mb-6 text-center text-2xl font-bold text-gray-900">Check-in</h1>
         <div className="flex justify-center">
           <Button onClick={handleCheckIn} disabled={isChecking} className="w-full max-w-xs">
-            {isChecking ? "Đang kiểm tra..." : "Check-in"}
+            {isChecking ? "Checking..." : "Check-in"}
           </Button>
         </div>
       </div>
