@@ -125,7 +125,7 @@ export default function AttendancePage() {
               </div>
             </div>
 
-            <div className="bg-white rounded-lg border p-6">
+            <div className="bg-white rounded-lg border">
               <h2 className="text-lg font-semibold mb-4">Attendance Overview</h2>
               <AttendanceTable />
             </div>
@@ -163,7 +163,7 @@ export default function AttendancePage() {
               </Card>
             </div>
 
-            <div className="bg-white rounded-lg border p-6">
+            <div className="bg-white rounded-lg border">
               <h2 className="text-lg font-semibold mb-4">Today's Check-ins</h2>
               <CheckInTable />
             </div>
