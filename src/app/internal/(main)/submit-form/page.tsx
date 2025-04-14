@@ -1,8 +1,8 @@
 "use client"
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { RequestForm } from "@/components/admin/form-request/RequestForm"
-import { RequestHistory } from "@/components/admin/form-request/RequestHistory"
+import { RequestForm } from "@/components/form-request/RequestForm"
+import { RequestHistory } from "@/components/form-request/RequestHistory"
 
 export default function SubmitFormPage() {
   return (

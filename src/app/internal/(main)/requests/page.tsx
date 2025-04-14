@@ -1,6 +1,6 @@
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { RequestTable } from "@/components/admin/requests/RequestTable"
+import { RequestTable } from "@/components/requests/RequestTable"
 import { Search, FileText } from "lucide-react"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 

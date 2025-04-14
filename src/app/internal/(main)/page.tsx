@@ -2,8 +2,8 @@
 
 import { Card } from "@/components/ui/card"
 import { Users, UserCheck, FileText, Calendar } from "lucide-react"
-import { RecentActivities } from "@/components/admin/dashboard/RecentActivities"
-import { AttendanceChart } from "@/components/admin/dashboard/AttendanceChart"
+import { RecentActivities } from "@/components/dashboard/RecentActivities"
+import { AttendanceChart } from "@/components/dashboard/AttendanceChart"
 import { cn } from "@/lib/utils"
 
 const stats = [

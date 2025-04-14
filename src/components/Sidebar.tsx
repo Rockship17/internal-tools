@@ -4,7 +4,7 @@ import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
 import { cn } from "@/lib/utils"
 import { LayoutDashboard, Users, FileText, UserCheck, LogOut } from "lucide-react"
-import { Button } from "../ui/button"
+import { Button } from "./ui/button"
 
 const menuItems = [
   {
