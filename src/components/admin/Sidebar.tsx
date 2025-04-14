@@ -39,6 +39,8 @@ export function Sidebar() {
   const router = useRouter()
 
   const handleLogout = () => {
+    localStorage.removeItem("userName")
+    localStorage.removeItem("fullName")
     router.push("/internal/login")
   }
 

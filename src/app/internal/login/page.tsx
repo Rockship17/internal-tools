@@ -8,8 +8,7 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import Link from "next/link"
-import { message } from "antd"
-// import { toast } from "sonner"
+import { toast } from "sonner"
 import { RockshipBlack } from "@/assets/icon/RockshipBlack"
 
 export default function Login() {
@@ -48,13 +47,16 @@ export default function Login() {
       }
 
       if (result.status_code === 200) {
-        message.success(result.message)
+        console.log("User Name:", result.data[0].userName)
+        console.log("Full Name:", result.data[0].fullName)
+        localStorage.setItem("userName", result.data[0].userName)
+        localStorage.setItem("fullName", result.data[0].fullName)
         router.push("/internal")
       } else {
         throw new Error(result.message || "Đăng nhập thất bại")
       }
     } catch (error: any) {
-      message.error(error.message || "Đăng nhập thất bại")
+      toast.error(error.message || "Đăng nhập thất bại")
     } finally {
       setLoading(false)
     }

@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge"
 import { MoreHorizontal } from "lucide-react"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { cn } from "@/lib/utils"
-
+import { Card } from "@/components/ui/card"
 type Employee = {
   id: number
   name: string
@@ -136,7 +136,7 @@ export function EmployeeTable() {
       {/* Mobile View */}
       <div className="lg:hidden space-y-4">
         {employees.map((employee) => (
-          <div key={employee.id} className="bg-white rounded-lg border p-4 space-y-4">
+          <Card key={employee.id} className="bg-white rounded-lg border p-4 space-y-4">
             <div className="flex items-start justify-between">
               <div className="flex items-center gap-3">
                 <Avatar className="h-12 w-12">
@@ -195,7 +195,7 @@ export function EmployeeTable() {
                 </div>
               </div>
             </div>
-          </div>
+          </Card>
         ))}
       </div>
     </div>

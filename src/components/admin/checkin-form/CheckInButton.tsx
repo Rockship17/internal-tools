@@ -10,9 +10,31 @@ const COMPANY_LOCATION = {
   longitude: 106.71172565253923,
 }
 
-const MAX_DISTANCE = 300
+const MAX_DISTANCE = 1300
 
-export default function CheckInButton() {
+const getAddressFromCoords = async (latitude: number, longitude: number): Promise<string> => {
+  try {
+    console.log("Fetching address for coordinates:", latitude, longitude)
+    const response = await fetch(
+      `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&language=vi`
+    )
+    const data = await response.json()
+    console.log("Geocoding API response:", data)
+    if (data.results && data.results.length > 0) {
+      return data.results[0].formatted_address
+    }
+    return "Unknown location"
+  } catch (error) {
+    console.error("Error getting address:", error)
+    return "Unknown location"
+  }
+}
+
+interface CheckInButtonProps {
+  onCheckIn: (time: string) => void
+}
+
+export default function CheckInButton({ onCheckIn }: CheckInButtonProps) {
   const [isChecking, setIsChecking] = useState(false)
 
   const calculateDistance = (lat1: number, lon1: number, lat2: number, lon2: number) => {
@@ -36,16 +58,35 @@ export default function CheckInButton() {
       })
 
       const { latitude, longitude } = position.coords
+      const address = await getAddressFromCoords(latitude, longitude)
 
       const distance = calculateDistance(latitude, longitude, COMPANY_LOCATION.latitude, COMPANY_LOCATION.longitude)
 
       if (distance <= MAX_DISTANCE) {
+        const response = await fetch("https://n8n.rockship.co/webhook/v1/check-in", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            userName: localStorage.getItem("fullName"),
+            fullName: localStorage.getItem("userName"),
+            check_in: new Date().toISOString(),
+            date: new Date().toISOString(),
+            location: address,
+          }),
+        })
+        const data = await response.json()
+        const currentTime = new Date().toISOString()
+        localStorage.setItem("checkInTime", currentTime)
+        onCheckIn(currentTime)
+        console.log("Check-in response:", data)
         toast.success("Check-in successful! You are within the company area.")
       } else {
         toast.error("Cannot check-in! You are too far from the company.")
       }
     } catch (error) {
-      console.error("Error getting location:", error)
+      console.error("Error during check-in:", error)
       toast.error("Cannot get your location. Please check location permissions.")
     } finally {
       setIsChecking(false)

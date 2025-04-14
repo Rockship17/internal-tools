@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Check, X } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { Card } from "@/components/ui/card"
 
 type Request = {
   id: number
@@ -179,7 +180,7 @@ export function RequestTable({ type }: RequestTableProps) {
       {/* Mobile View */}
       <div className="lg:hidden space-y-4">
         {filteredRequests.map((request) => (
-          <div key={request.id} className="bg-white rounded-lg border p-4 space-y-4">
+          <Card key={request.id} className="bg-white rounded-lg border p-4 space-y-4">
             <div className="flex items-start justify-between">
               <div className="flex items-center gap-3">
                 <Avatar className="h-12 w-12">
@@ -254,7 +255,7 @@ export function RequestTable({ type }: RequestTableProps) {
                 <p className="mt-1">{request.reason}</p>
               </div>
             </div>
-          </div>
+          </Card>
         ))}
       </div>
     </div>

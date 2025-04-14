@@ -1,9 +1,21 @@
+"use client"
+
 import { Sidebar } from "@/components/admin/Sidebar"
 import { Header } from "@/components/admin/Header"
-
+import { useRouter } from "next/navigation"
+import { useEffect } from "react"
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
+  const router = useRouter()
+
+  useEffect(() => {
+    const userName = localStorage.getItem("userName")
+    if (!userName) {
+      router.push("/internal/login")
+    }
+  }, [])
+
   return (
-    <div className="flex flex-col lg:flex-row min-h-screen bg-gray-50">
+    <div className="flex flex-col lg:flex-row min-h-screen bg-white  lg:bg-gray-50">
       <div className="max-lg:hidden block">
         <Sidebar />
       </div>
