@@ -69,11 +69,11 @@ const employees: Employee[] = [
 
 export function AttendanceTable() {
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 bg-background">
       {/* Mobile Card View */}
       <div className="grid grid-cols-1 gap-4 lg:hidden">
         {employees.map((employee) => (
-          <div key={employee.id} className="rounded-lg border bg-white p-4 shadow-sm">
+          <div key={employee.id} className="rounded-lg border bg-background p-4 shadow-sm">
             <div className="flex items-start justify-between">
               <div className="flex items-center gap-3">
                 <Avatar>
@@ -81,8 +81,8 @@ export function AttendanceTable() {
                   <AvatarFallback className="bg-blue-100 text-blue-600">{employee.name.charAt(0)}</AvatarFallback>
                 </Avatar>
                 <div>
-                  <p className="font-medium text-gray-900">{employee.name}</p>
-                  <p className="text-sm text-gray-500">{employee.email}</p>
+                  <p className="font-medium text-foreground">{employee.name}</p>
+                  <p className="text-sm text-muted-foreground">{employee.email}</p>
                 </div>
               </div>
               <Badge
@@ -107,7 +107,7 @@ export function AttendanceTable() {
 
             <div className="mt-4 space-y-2">
               <div className="flex items-center justify-between text-sm">
-                <span className="text-gray-500">Department</span>
+                <span className="text-muted-foreground">Department</span>
                 <div className="flex items-center gap-2">
                   <span
                     className={cn("w-2 h-2 rounded-full", {
@@ -117,23 +117,23 @@ export function AttendanceTable() {
                       "bg-green-500": employee.department === "Business",
                     })}
                   />
-                  <span className="font-medium text-gray-900">{employee.department}</span>
+                  <span className="font-medium text-foreground">{employee.department}</span>
                 </div>
               </div>
 
               <div className="flex items-center justify-between text-sm">
-                <span className="text-gray-500">Check-in</span>
+                <span className="text-muted-foreground">Check-in</span>
                 <span className="font-medium text-green-600">{employee.checkIn || "---"}</span>
               </div>
 
               <div className="flex items-center justify-between text-sm">
-                <span className="text-gray-500">Check-out</span>
+                <span className="text-muted-foreground">Check-out</span>
                 <span className="font-medium text-blue-600">{employee.checkOut || "---"}</span>
               </div>
 
               <div className="flex items-center justify-between text-sm">
-                <span className="text-gray-500">Working Hours</span>
-                <span className="font-medium text-gray-900">{employee.workingHours || "---"}</span>
+                <span className="text-muted-foreground">Working Hours</span>
+                <span className="font-medium text-foreground">{employee.workingHours || "---"}</span>
               </div>
             </div>
           </div>
@@ -141,8 +141,8 @@ export function AttendanceTable() {
       </div>
 
       {/* Desktop Table View */}
-      <div className="hidden lg:block rounded-lg border bg-white shadow-sm">
-        <Table>
+      <div className="hidden lg:block rounded-lg border bg-background shadow-sm">
+        <Table className="bg-background">
           <TableHeader>
             <TableRow className="hover:bg-gray-50/50">
               <TableHead>Employee</TableHead>

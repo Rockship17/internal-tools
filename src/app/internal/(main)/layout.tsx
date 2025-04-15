@@ -15,7 +15,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   }, [])
 
   return (
-    <div className="flex flex-col lg:flex-row min-h-screen bg-white  lg:bg-gray-50">
+    <div className="flex flex-col lg:flex-row min-h-screen bg-background">
       <div className="max-lg:hidden block">
         <Sidebar />
       </div>

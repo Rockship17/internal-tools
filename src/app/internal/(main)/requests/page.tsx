@@ -7,7 +7,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 export default function RequestsPage() {
   return (
     <div className="space-y-6">
-      <div className="bg-white rounded-lg border p-0 lg:p-6">
+      <div className="bg-card rounded-lg border p-0 lg:p-6">
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
           <div className="space-y-1">
             <div className="flex items-center gap-3">
@@ -23,22 +23,22 @@ export default function RequestsPage() {
         <div className="mt-6">
           <Tabs defaultValue="all" className="w-full">
             <div className="flex flex-col lg:flex-row lg:items-center gap-4">
-              <TabsList className="w-full lg:w-auto bg-gray-50 p-1 rounded-lg">
+              <TabsList className="w-full lg:w-auto bg-card p-1 rounded-lg">
                 <TabsTrigger
                   value="all"
-                  className="flex-1 lg:flex-none data-[state=active]:bg-white data-[state=active]:shadow-sm"
+                  className="flex-1 lg:flex-none data-[state=active]:bg-white data-[state=active]:text-black data-[state=active]:shadow-sm"
                 >
                   All
                 </TabsTrigger>
                 <TabsTrigger
                   value="leave"
-                  className="flex-1 lg:flex-none data-[state=active]:bg-white data-[state=active]:shadow-sm"
+                  className="flex-1 lg:flex-none data-[state=active]:bg-white data-[state=active]:text-black data-[state=active]:shadow-sm"
                 >
                   Leave
                 </TabsTrigger>
                 <TabsTrigger
                   value="remote"
-                  className="flex-1 lg:flex-none data-[state=active]:bg-white data-[state=active]:shadow-sm"
+                  className="flex-1 lg:flex-none data-[state=active]:bg-white data-[state=active]:text-black data-[state=active]:shadow-sm"
                 >
                   Remote Work
                 </TabsTrigger>
@@ -46,12 +46,12 @@ export default function RequestsPage() {
 
               <div className="flex flex-col lg:flex-row gap-3 w-full lg:w-auto">
                 <div className="relative flex-1 lg:w-[300px]">
-                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
-                  <Input placeholder="Search by name..." className="pl-9 w-full bg-gray-50 border-0" />
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                  <Input placeholder="Search by name..." className="pl-9 w-full bg-card border-0" />
                 </div>
                 <Select defaultValue="all">
-                  <SelectTrigger className="w-full lg:w-[180px] bg-gray-50 border-0">
-                    <SelectValue placeholder="All statuses" />
+                  <SelectTrigger className="w-full lg:w-[180px] bg-card border-0">
+                    <SelectValue placeholder="All statuses" className="text-black" />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="all">All statuses</SelectItem>
@@ -63,13 +63,13 @@ export default function RequestsPage() {
               </div>
             </div>
 
-            <TabsContent value="all" className="mt-6">
+            <TabsContent value="all" className="mt-6 bg-card">
               <RequestTable />
             </TabsContent>
-            <TabsContent value="leave" className="mt-6">
+            <TabsContent value="leave" className="mt-6 bg-card">
               <RequestTable type="leave" />
             </TabsContent>
-            <TabsContent value="remote" className="mt-6">
+            <TabsContent value="remote" className="mt-6 bg-card">
               <RequestTable type="remote" />
             </TabsContent>
           </Tabs>

@@ -78,13 +78,13 @@ export function RequestHistory() {
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
           <Input
             placeholder="Search..."
-            className="pl-9"
+            className="pl-9 bg-background"
             value={searchText}
             onChange={(e) => setSearchText(e.target.value)}
           />
         </div>
         <Select value={statusFilter} onValueChange={setStatusFilter}>
-          <SelectTrigger className="w-[180px]">
+          <SelectTrigger className="w-[180px] bg-background">
             <SelectValue placeholder="All statuses" />
           </SelectTrigger>
           <SelectContent>
@@ -99,11 +99,11 @@ export function RequestHistory() {
       {/* Mobile Card View */}
       <div className="grid grid-cols-1 gap-4 lg:hidden">
         {filteredRequests.map((request) => (
-          <div key={request.id} className="rounded-lg border bg-white p-4 shadow-sm">
+          <div key={request.id} className="rounded-lg border bg-background p-4 shadow-sm">
             <div className="flex items-start justify-between">
               <div>
-                <p className="font-medium text-gray-900">{requestTypes[request.type as keyof typeof requestTypes]}</p>
-                <p className="text-sm text-gray-500">
+                <p className="font-medium text-foreground">{requestTypes[request.type as keyof typeof requestTypes]}</p>
+                <p className="text-sm text-muted-foreground">
                   {format(request.startDate, "dd/MM/yyyy")} - {format(request.endDate, "dd/MM/yyyy")}
                 </p>
               </div>
@@ -122,23 +122,23 @@ export function RequestHistory() {
 
             <div className="mt-4 space-y-2">
               <div className="flex items-center justify-between text-sm">
-                <span className="text-gray-500">Duration</span>
-                <span className="font-medium text-gray-900">{request.duration} days</span>
+                <span className="text-muted-foreground">Duration</span>
+                <span className="font-medium text-foreground">{request.duration} days</span>
               </div>
 
               <div className="flex items-center justify-between text-sm">
-                <span className="text-gray-500">Reason</span>
-                <span className="font-medium text-gray-900">{request.reason}</span>
+                <span className="text-muted-foreground">Reason</span>
+                <span className="font-medium text-foreground">{request.reason}</span>
               </div>
 
               <div className="flex items-center justify-between text-sm">
-                <span className="text-gray-500">Approver</span>
-                <span className="font-medium text-gray-900">{request.approver || "-"}</span>
+                <span className="text-muted-foreground">Approver</span>
+                <span className="font-medium text-foreground">{request.approver || "-"}</span>
               </div>
 
               <div className="flex items-center justify-between text-sm">
-                <span className="text-gray-500">Approval Date</span>
-                <span className="font-medium text-gray-900">
+                <span className="text-muted-foreground">Approval Date</span>
+                <span className="font-medium text-foreground">
                   {request.approvedAt ? format(request.approvedAt, "dd/MM/yyyy") : "-"}
                 </span>
               </div>
@@ -148,8 +148,8 @@ export function RequestHistory() {
       </div>
 
       {/* Desktop Table View */}
-      <div className="hidden lg:block rounded-lg border bg-white shadow-sm">
-        <Table>
+      <div className="hidden lg:block rounded-lg border bg-background shadow-sm">
+        <Table className="bg-background">
           <TableHeader>
             <TableRow className="hover:bg-gray-50/50">
               <TableHead>Request Type</TableHead>

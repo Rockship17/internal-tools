@@ -80,7 +80,7 @@ export function RequestForm() {
   }
 
   return (
-    <Card className="p-6">
+    <Card className="p-6 bg-card-foreground">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
           <RequestTypeField form={form} />
@@ -122,7 +122,7 @@ export function RequestForm() {
                   <FormLabel>Remote Work Type *</FormLabel>
                   <Select onValueChange={field.onChange} defaultValue={field.value}>
                     <FormControl>
-                      <SelectTrigger>
+                      <SelectTrigger className="text-black">
                         <SelectValue placeholder="Select remote work type" />
                       </SelectTrigger>
                     </FormControl>

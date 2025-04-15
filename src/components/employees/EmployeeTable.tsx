@@ -67,10 +67,10 @@ export function EmployeeTable() {
   return (
     <div>
       {/* Desktop View */}
-      <div className="hidden lg:block rounded-lg border bg-white shadow-sm">
-        <Table>
+      <div className="hidden lg:block rounded-lg border bg-card shadow-sm">
+        <Table className="bg-card-foreground">
           <TableHeader>
-            <TableRow className="hover:bg-gray-50/50">
+            <TableRow className="hover:bg-muted-foreground/50">
               <TableHead>Employee</TableHead>
               <TableHead>Department</TableHead>
               <TableHead>Position</TableHead>
@@ -81,22 +81,24 @@ export function EmployeeTable() {
           </TableHeader>
           <TableBody>
             {employees.map((employee) => (
-              <TableRow key={employee.id} className="hover:bg-gray-50/50">
+              <TableRow key={employee.id} className="hover:bg-muted-foreground/50">
                 <TableCell>
                   <div className="flex items-center gap-3">
                     <Avatar>
                       <AvatarImage src={`/avatars/${employee.id}.png`} />
-                      <AvatarFallback className="bg-blue-100 text-blue-600">{employee.name.charAt(0)}</AvatarFallback>
+                      <AvatarFallback className="bg-muted-foreground text-muted-foreground">
+                        {employee.name.charAt(0)}
+                      </AvatarFallback>
                     </Avatar>
                     <div>
                       <p className="font-medium">{employee.name}</p>
-                      <p className="text-sm text-gray-500">{employee.email}</p>
+                      <p className="text-sm text-muted-foreground">{employee.email}</p>
                     </div>
                   </div>
                 </TableCell>
                 <TableCell>
                   <div className="flex items-center gap-2">
-                    <span className="w-2 h-2 rounded-full bg-blue-500"></span>
+                    <span className="w-2 h-2 rounded-full bg-muted-foreground"></span>
                     {employee.department}
                   </div>
                 </TableCell>
@@ -117,10 +119,10 @@ export function EmployeeTable() {
                 </TableCell>
                 <TableCell>
                   <DropdownMenu>
-                    <DropdownMenuTrigger className="hover:bg-gray-100 p-1 rounded-md">
+                    <DropdownMenuTrigger className="hover:bg-muted-foreground p-1 rounded-md">
                       <MoreHorizontal className="w-5 h-5" />
                     </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
+                    <DropdownMenuContent align="end" className="bg-card-foreground">
                       <DropdownMenuItem className="text-blue-600">View Details</DropdownMenuItem>
                       <DropdownMenuItem className="text-yellow-600">Edit</DropdownMenuItem>
                       <DropdownMenuItem className="text-red-600">Delete</DropdownMenuItem>
@@ -136,22 +138,22 @@ export function EmployeeTable() {
       {/* Mobile View */}
       <div className="lg:hidden space-y-4">
         {employees.map((employee) => (
-          <Card key={employee.id} className="bg-white rounded-lg border p-4 space-y-4">
+          <Card key={employee.id} className="bg-card-foreground rounded-lg border p-4 space-y-4">
             <div className="flex items-start justify-between">
               <div className="flex items-center gap-3">
                 <Avatar className="h-12 w-12">
                   <AvatarImage src={`/avatars/${employee.id}.png`} />
-                  <AvatarFallback className="bg-blue-100 text-blue-600 text-lg">
+                  <AvatarFallback className="bg-muted-foreground text-muted-foreground text-lg">
                     {employee.name.charAt(0)}
                   </AvatarFallback>
                 </Avatar>
                 <div>
                   <h3 className="font-medium text-base">{employee.name}</h3>
-                  <p className="text-sm text-gray-500">{employee.email}</p>
+                  <p className="text-sm text-muted-foreground">{employee.email}</p>
                 </div>
               </div>
               <DropdownMenu>
-                <DropdownMenuTrigger className="hover:bg-gray-100 p-1 rounded-md">
+                <DropdownMenuTrigger className="hover:bg-muted-foreground p-1 rounded-md">
                   <MoreHorizontal className="w-5 h-5" />
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
@@ -164,22 +166,22 @@ export function EmployeeTable() {
 
             <div className="grid grid-cols-2 gap-3 text-sm">
               <div>
-                <p className="text-gray-500">Department</p>
+                <p className="text-muted-foreground">Department</p>
                 <div className="flex items-center gap-2 mt-1">
-                  <span className="w-2 h-2 rounded-full bg-blue-500"></span>
+                  <span className="w-2 h-2 rounded-full bg-muted-foreground"></span>
                   <p>{employee.department}</p>
                 </div>
               </div>
               <div>
-                <p className="text-gray-500">Position</p>
+                <p className="text-muted-foreground">Position</p>
                 <p className="mt-1">{employee.position}</p>
               </div>
               <div>
-                <p className="text-gray-500">Start Date</p>
+                <p className="text-muted-foreground">Start Date</p>
                 <p className="mt-1">{employee.startDate}</p>
               </div>
               <div>
-                <p className="text-gray-500">Status</p>
+                <p className="text-muted-foreground">Status</p>
                 <div className="mt-1">
                   <Badge
                     variant={employee.status === "active" ? "default" : "secondary"}

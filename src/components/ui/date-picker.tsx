@@ -35,15 +35,15 @@ export function DatePicker({
             {date ? format(date, showTime ? "PPP HH:mm" : "PPP") : <span>Pick a date</span>}
           </Button>
         </PopoverTrigger>
-        <PopoverContent className="w-auto p-0" align="start">
-          <Calendar 
-            mode="single" 
-            selected={dateState} 
+        <PopoverContent className="w-auto p-0 bg-white text-black" align="start">
+          <Calendar
+            mode="single"
+            selected={dateState}
             onSelect={(date) => {
-              setDateState(date);
-              if (date) onSelect(date);
-            }} 
-            initialFocus 
+              setDateState(date)
+              if (date) onSelect(date)
+            }}
+            initialFocus
           />
           {showTime && (
             <div className="p-3 border-t">

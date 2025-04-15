@@ -76,10 +76,10 @@ export function RequestTable({ type }: RequestTableProps) {
   return (
     <div>
       {/* Desktop View */}
-      <div className="hidden lg:block rounded-lg border bg-white shadow-sm">
-        <Table>
+      <div className="hidden lg:block rounded-lg border bg-card shadow-sm">
+        <Table className="bg-card">
           <TableHeader>
-            <TableRow className="hover:bg-gray-50/50">
+            <TableRow className="hover:bg-muted-foreground/50">
               <TableHead>Employee</TableHead>
               <TableHead>Request Type</TableHead>
               <TableHead>Period</TableHead>

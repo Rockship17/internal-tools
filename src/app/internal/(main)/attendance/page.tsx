@@ -77,11 +77,11 @@ export default function AttendancePage() {
   }, [])
 
   return (
-    <div className="space-y-4 lg:space-y-6 bg-white rounded-lg border p-0 lg:p-6">
+    <div className="space-y-4 lg:space-y-6 bg-background rounded-lg border p-0 lg:p-6">
       <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
         <div>
-          <h1 className="text-xl lg:text-2xl font-semibold">Attendance Management</h1>
-          <p className="text-gray-500 mt-1">Track and manage employee attendance and check-ins</p>
+          <h1 className="text-xl lg:text-2xl font-semibold text-foreground">Attendance Management</h1>
+          <p className="text-muted-foreground mt-1">Track and manage employee attendance and check-ins</p>
         </div>
         <div className="flex items-center gap-3">
           <Button variant="outline" className="w-full lg:w-auto">
@@ -95,7 +95,7 @@ export default function AttendancePage() {
         <TabsList className="grid w-full grid-cols-2 h-12 p-1 rounded-lg mb-4">
           <TabsTrigger
             value="checkin"
-            className="data-[state=active]:bg-white data-[state=active]:text-blue-600 data-[state=active]:shadow-sm rounded-md transition-all duration-200 h-12"
+            className="data-[state=active]:bg-background data-[state=active]:text-blue-600 data-[state=active]:shadow-sm rounded-md transition-all duration-200 h-12"
           >
             <div className="flex items-center gap-2">
               <Clock className="h-4 w-4" />
@@ -104,7 +104,7 @@ export default function AttendancePage() {
           </TabsTrigger>
           <TabsTrigger
             value="attendance"
-            className="data-[state=active]:bg-white data-[state=active]:text-blue-600 data-[state=active]:shadow-sm rounded-md transition-all duration-200 h-12"
+            className="data-[state=active]:bg-background data-[state=active]:text-blue-600 data-[state=active]:shadow-sm rounded-md transition-all duration-200 h-12"
           >
             <div className="flex items-center gap-2">
               <Calendar className="h-4 w-4" />
@@ -119,7 +119,7 @@ export default function AttendancePage() {
             <Card className="p-6">
               <div className="flex items-center gap-3 mb-4">
                 <Clock className="h-6 w-6 text-blue-600" />
-                <h2 className="text-lg font-semibold">Quick Actions</h2>
+                <h2 className="text-lg font-semibold text-foreground">Quick Actions</h2>
               </div>
               <div className="flex flex-col sm:flex-row items-center gap-4 justify-center">
                 <CheckInButton onCheckIn={(time) => setCheckInTime(time)} />
@@ -130,7 +130,7 @@ export default function AttendancePage() {
             <Card className="p-6">
               <div className="flex items-center gap-3 mb-4">
                 <CalendarDays className="h-6 w-6 text-blue-600" />
-                <h2 className="text-lg font-semibold">Today's Summary</h2>
+                <h2 className="text-lg font-semibold text-foreground">Today's Summary</h2>
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div className="rounded-lg bg-green-50 p-4 text-center flex flex-col justify-between items-center">
@@ -162,14 +162,14 @@ export default function AttendancePage() {
             ))}
           </div>
 
-          <div className="bg-white rounded-lg border p-6 flex flex-col lg:flex-row gap-3 lg:items-center">
+          <div className="bg-background rounded-lg border p-6 flex flex-col lg:flex-row gap-3 lg:items-center">
             <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
-              <Input placeholder="Search employee..." className="pl-9" />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+              <Input placeholder="Search employee..." className="pl-9 bg-background" />
             </div>
             <div className="flex gap-3 overflow-x-auto py-2">
               <Select defaultValue="all">
-                <SelectTrigger className="w-full lg:w-auto">
+                <SelectTrigger className="w-full lg:w-auto bg-background">
                   <SelectValue placeholder="All Department" />
                 </SelectTrigger>
                 <SelectContent>
@@ -181,7 +181,7 @@ export default function AttendancePage() {
                 </SelectContent>
               </Select>
               <Select defaultValue="all">
-                <SelectTrigger className="w-full lg:w-auto">
+                <SelectTrigger className="w-full lg:w-auto bg-background">
                   <SelectValue placeholder="All Status" />
                 </SelectTrigger>
                 <SelectContent>
@@ -195,7 +195,7 @@ export default function AttendancePage() {
             </div>
           </div>
 
-          <div className="bg-white rounded-lg border">
+          <div className="bg-background rounded-lg border">
             <h2 className="text-lg font-semibold mb-4">Attendance Overview</h2>
             <AttendanceTable />
           </div>
