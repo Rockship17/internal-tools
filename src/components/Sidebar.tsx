@@ -3,7 +3,7 @@
 import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
 import { cn } from "@/lib/utils"
-import { LayoutDashboard, Users, FileText, UserCheck, LogOut } from "lucide-react"
+import { LayoutDashboard, Users, FileText, UserCheck, LogOut, Send, Star } from "lucide-react"
 import { Button } from "./ui/button"
 
 const menuItems = [
@@ -30,7 +30,12 @@ const menuItems = [
   {
     title: "Submit",
     href: "/internal/submit-form",
-    icon: FileText,
+    icon: Send,
+  },
+  {
+    title: "Tools",
+    href: "/internal-tools",
+    icon: Star,
   },
 ]
 

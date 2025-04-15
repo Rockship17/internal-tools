@@ -1,8 +1,11 @@
 "use client"
 
 import React, { useState } from "react"
-import { Form, Input, Button, message } from "antd"
-import { MailOutlined, UserOutlined } from "@ant-design/icons"
+import { Form } from "antd"
+import { UserOutlined } from "@ant-design/icons"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { toast } from "sonner"
 
 export default function FormRejectInterview() {
   const [form] = Form.useForm()
@@ -27,10 +30,10 @@ export default function FormRejectInterview() {
       })
 
       if (!response.ok) throw new Error("Submission failed")
-      message.success("Form submitted successfully!")
+      toast.success("Form submitted successfully!")
       form.resetFields()
     } catch (error) {
-      message.error("An error occurred. Please try again.")
+      toast.error("An error occurred. Please try again.")
       console.error(error)
     } finally {
       setLoading(false)
@@ -40,7 +43,7 @@ export default function FormRejectInterview() {
     <div className="min-h-screen py-12">
       <div className="container mx-auto">
         <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
-          <div className="bg-gradient-to-r from-indigo-600 to-blue-500 px-8 py-6 text-white">
+          <div className="bg-black px-8 py-6 text-white">
             <h1 className="text-3xl font-black tracking-tight">Reject Interview</h1>
             <p className="text-blue-100 mt-1 text-sm">Complete the form below to reject an interview</p>
           </div>
@@ -69,32 +72,22 @@ export default function FormRejectInterview() {
                     required
                     rules={[{ required: true, message: "Please input your email!" }]}
                   >
-                    <Input
-                      prefix={<MailOutlined className="text-gray-400" />}
-                      placeholder="Enter email address"
-                      className="rounded-lg"
-                    />
+                    <Input placeholder="Enter email address" className="rounded-lg" />
                   </Form.Item>
                   <Form.Item
                     label="Full Name"
                     name="full_name"
                     rules={[{ required: true, message: "Please input your full name!" }]}
                   >
-                    <Input
-                      prefix={<UserOutlined className="text-gray-400" />}
-                      placeholder="Enter full name"
-                      className="rounded-lg"
-                    />
+                    <Input placeholder="Enter full name" className="rounded-lg" />
                   </Form.Item>
                 </div>
               </div>
 
               <div className="pt-6 border-t border-gray-100 w-full flex justify-center">
                 <Button
-                  type="primary"
-                  htmlType="submit"
-                  loading={loading}
-                  className="w-full md:w-auto h-12 px-8 rounded-lg bg-gradient-to-r from-indigo-600 to-blue-500 hover:from-indigo-700 hover:to-blue-600 border-none shadow-lg"
+                  type="submit"
+                  className="w-full md:w-auto h-12 px-8 rounded-lg bg-black border-none shadow-lg text-white"
                 >
                   {loading ? "Processing..." : "Reject Interview"}
                 </Button>

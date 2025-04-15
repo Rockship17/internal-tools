@@ -59,7 +59,7 @@ export default function FormOfferLetter() {
     <div className="py-12">
       <div className="container mx-auto">
         <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
-          <div className="bg-gradient-to-r from-indigo-600 to-blue-500 px-8 py-6 text-white">
+          <div className="bg-black px-8 py-6 text-white">
             <h1 className="text-3xl font-black tracking-tight">Offer Letter Details</h1>
             <p className="text-blue-100 mt-1 text-sm">
               Complete the form below to generate a professional offer letter
@@ -240,7 +240,7 @@ export default function FormOfferLetter() {
 
               {/* Submit Button */}
               <div className="pt-6 border-t border-gray-100 w-full flex justify-center">
-                <Button className="w-full md:w-auto h-12 px-8 rounded-lg bg-gradient-to-r from-indigo-600 to-blue-500 hover:from-indigo-700 hover:to-blue-600 border-none shadow-lg">
+                <Button className="w-full md:w-auto h-12 px-8 rounded-lg bg-black border-none shadow-lg text-white">
                   {loading ? "Processing..." : "Generate Offer Letter"}
                 </Button>
               </div>

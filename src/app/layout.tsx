@@ -24,21 +24,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html className="mdl-js">
-      <head>
-        <link rel="icon" href="/rockship.png" />
-
-        {/* iOS (Apple) */}
-        <link rel="apple-touch-icon" href="/rockship.png" />
-        <meta name="apple-mobile-web-app-capable" content="yes" />
-        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-        <meta name="apple-mobile-web-app-title" content="Rockship Internal Tools" />
-
-        {/* Android */}
-        <link rel="manifest" href="/manifest.json" />
-        <meta name="mobile-web-app-capable" content="yes" />
-        <meta name="theme-color" content="#ffffff" />
-      </head>
+    <html>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
           {children}
