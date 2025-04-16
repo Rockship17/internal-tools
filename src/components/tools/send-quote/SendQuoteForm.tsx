@@ -244,7 +244,7 @@ Please return only a valid JSON object using this schema:
             <FormField
               control={form.control}
               name="platform"
-              render={({ field }) => (
+              render={() => (
                 <FormItem>
                   <FormLabel>Platform</FormLabel>
                   <FormControl>

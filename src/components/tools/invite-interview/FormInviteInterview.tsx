@@ -1,6 +1,6 @@
 import React, { useState } from "react"
 import { Form, DatePicker } from "antd"
-import { MailOutlined, UserOutlined, CalendarOutlined } from "@ant-design/icons"
+import { UserOutlined, CalendarOutlined } from "@ant-design/icons"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { toast } from "sonner"
