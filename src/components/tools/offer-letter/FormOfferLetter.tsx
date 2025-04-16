@@ -149,7 +149,7 @@ export default function FormOfferLetter() {
                       />
                     </Form.Item>
                     <Form.Item name="salary_format" className="w-20">
-                      <Select defaultValue="vnd" className="rounded-lg">
+                      <Select className="rounded-lg">
                         <Select.Option value="vnd">VND</Select.Option>
                       </Select>
                     </Form.Item>

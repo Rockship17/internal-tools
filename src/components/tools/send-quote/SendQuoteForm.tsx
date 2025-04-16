@@ -166,7 +166,7 @@ Please return only a valid JSON object using this schema:
 
   return (
     <div className="flex flex-col md:flex-row gap-4">
-      <Card className="p-6 mt-6 bg-white flex-1">
+      <Card className="p-6 mt-6 bg-background flex-1">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             <div className="grid gap-6 md:grid-cols-2">
@@ -249,7 +249,7 @@ Please return only a valid JSON object using this schema:
                   <FormLabel>Platform</FormLabel>
                   <FormControl>
                     <Select>
-                      <SelectTrigger>
+                      <SelectTrigger className="text-background">
                         <SelectValue placeholder="Select platform" />
                       </SelectTrigger>
                       <SelectContent>
@@ -264,7 +264,12 @@ Please return only a valid JSON object using this schema:
               )}
             />
             <div className="flex justify-end">
-              <Button type="submit" size="lg" disabled={isLoading}>
+              <Button
+                type="submit"
+                size="lg"
+                disabled={isLoading}
+                className="bg-foreground text-background hover:bg-foreground/90"
+              >
                 {isLoading ? "Generating..." : "Generate Quote"}
               </Button>
             </div>
@@ -273,7 +278,7 @@ Please return only a valid JSON object using this schema:
       </Card>
 
       {isLoading ? null : quoteData ? (
-        <Card className="p-6 mt-6 bg-white relative ml-4 flex-1">
+        <Card className="p-6 mt-6 bg-background relative ml-4 flex-1">
           <div className="absolute top-4 right-4 flex gap-2">
             {isEditing ? (
               <>
@@ -309,7 +314,7 @@ Please return only a valid JSON object using this schema:
           <div className="flex items-start justify-between mb-8">
             <div>
               <h1 className="text-xl font-bold mb-2">Rockship Pte. Ltd.</h1>
-              <p className="text-gray-600">OXLEY BIZHUB, 73 UBI ROAD 1, #08-54, Postal 408733</p>
+              <p className="text-muted-foreground">OXLEY BIZHUB, 73 UBI ROAD 1, #08-54, Postal 408733</p>
             </div>
             <div>
               <h2 className="text-2xl font-bold uppercase underline">QUOTATION</h2>
@@ -332,7 +337,7 @@ Please return only a valid JSON object using this schema:
           <div className="overflow-x-auto">
             <table className="w-full border-collapse">
               <thead>
-                <tr className="bg-gray-100">
+                <tr className="bg-foreground text-background">
                   <th className="border p-3 text-left">No.</th>
                   <th className="border p-3 text-left">Item</th>
                   <th className="border p-3 text-left">Mandays</th>
@@ -380,7 +385,7 @@ Please return only a valid JSON object using this schema:
                     </td>
                   </tr>
                 ))}
-                <tr className="bg-gray-100 font-semibold">
+                <tr className="bg-foreground text-background font-semibold">
                   <td colSpan={2} className="border p-3">
                     Total one-time cost
                   </td>

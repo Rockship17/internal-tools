@@ -12,15 +12,15 @@ export default function SendEmail() {
       <div className="container mx-auto px-4 py-8 max-w-4xl">
         <div className="w-full">
           <div className="text-center">
-            <h1 className="text-2xl font-bold text-gray-800">Email Management</h1>
-            <p className="text-base text-gray-600 mt-2">
+            <h1 className="text-2xl font-bold text-foreground">Email Management</h1>
+            <p className="text-base text-muted-foreground mt-2">
               Manage your email communications with candidates - from interview invitations to offer letters
             </p>
           </div>
 
           <Card className="rounded-xl !border-none shadow-none">
             <Tabs className="!border-none" defaultValue="invite-interview">
-              <TabsList className="bg-white w-full justify-center my-4">
+              <TabsList className="bg-background w-full justify-center my-4">
                 <TabsTrigger value="invite-interview" className="w-full h-12">
                   Invite Interview
                 </TabsTrigger>
