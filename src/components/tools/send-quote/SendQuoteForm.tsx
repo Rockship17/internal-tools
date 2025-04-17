@@ -1,58 +1,31 @@
 "use client"
 
 import { zodResolver } from "@hookform/resolvers/zod"
-import * as z from "zod"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
 import { useForm } from "react-hook-form"
 import { Card } from "@/components/ui/card"
-import { Edit2, Save, X } from "lucide-react"
+import { Edit2, Save, Upload, X } from "lucide-react"
 import { useState } from "react"
 import { GoogleGenerativeAI } from "@google/generative-ai"
 import { Select, SelectValue, SelectTrigger, SelectContent, SelectItem } from "@/components/ui/select"
-
-interface QuoteItem {
-  no: number
-  item: string
-  mandays: number
-  costMilVND: number
-}
-
-interface Company {
-  name: string
-  address: string
-}
-
-interface QuoteData {
-  recipient: string
-  company: Company
-  quotationItems: QuoteItem[]
-  totalMandays: number
-  totalOneTimeCostMilVND: number
-  monthlyOperatingCostMilVND: number
-  notes: string[]
-}
+import Logo from "@/assets/icon/rockship.png"
+import Image from "next/image"
+import { generateQuoteDoc } from "./generateQuoteDoc"
+import { QuoteData, QuoteItem, formSchema, QuoteFormValues } from "./types"
+import { generatePrompt } from "./generatePrompt"
+import { cleanJsonResponse } from "./utils"
 
 const genAI = new GoogleGenerativeAI(process.env.NEXT_PUBLIC_GEMINI_API_KEY || "")
-
-const formSchema = z.object({
-  projectName: z.string().min(2, "Project name must be at least 2 characters"),
-  clientName: z.string().min(2, "Client name must be at least 2 characters"),
-  projectDescription: z.string().min(10, "Description must be at least 10 characters"),
-  platform: z.string().min(0, "Please provide platform"),
-  expectedTimeline: z.string().min(1, "Please provide expected timeline"),
-  budget: z.string().regex(/^\d+(\.\d{1,2})?$/, "Please enter a valid budget"),
-})
-
-type QuoteFormValues = z.infer<typeof formSchema>
 
 export default function SendQuoteForm() {
   const [isEditing, setIsEditing] = useState(false)
   const [quoteData, setQuoteData] = useState<QuoteData | null>(null)
   const [isLoading, setIsLoading] = useState(false)
   const [recipientName, setRecipientName] = useState("")
+  const [uploadStatus, setUploadStatus] = useState<"idle" | "loading" | "success" | "error">("idle")
 
   const form = useForm<QuoteFormValues>({
     resolver: zodResolver(formSchema),
@@ -65,56 +38,6 @@ export default function SendQuoteForm() {
       budget: "",
     },
   })
-
-  const generatePrompt = (data: QuoteFormValues) => {
-    return `You are a software project estimator. Based on the provided project description, platform type, timeline, and budget, return a quotation table in JSON format using the following structure:
-
-Input:
-- Project Name: ${data.projectName}
-- Client Name: ${data.clientName}
-- Project Description: ${data.projectDescription}
-- Platform: ${data.platform}
-- Timeline: ${data.expectedTimeline}
-- Budget: ${data.budget} VND
-
-- Each item should include: number (index), item name, estimated mandays, and cost in million VND.
-- Also include the total mandays, total one-time cost, and estimated monthly operating cost.
-- Add a note on estimated development timeline in weeks.
-
-Please return only a valid JSON object using this schema:
-
-{
-  "recipient": "Client name (placeholder)",
-  "company": {
-    "name": "Rockship Pte. Ltd.",
-    "address": "OXLEY BIZHUB, 73 UBI ROAD 1, #08-54, Postal 408733"
-  },
-  "quotationItems": [
-    {
-      "no": number,
-      "item": "Task or phase description",
-      "mandays": number,
-      "costMilVND": number
-    }
-    ...
-  ],
-  "totalMandays": number,
-  "totalOneTimeCostMilVND": number,
-  "monthlyOperatingCostMilVND": number,
-  "notes": [
-    "Estimated development timeline is around X weeks"
-  ]
-}
-`
-  }
-
-  const cleanJsonResponse = (text: string): string => {
-    // Remove markdown code blocks and any whitespace before/after
-    return text
-      .replace(/^```json\n?/, "")
-      .replace(/\n?```$/, "")
-      .trim()
-  }
 
   const onSubmit = async (data: QuoteFormValues) => {
     try {
@@ -162,6 +85,38 @@ Please return only a valid JSON object using this schema:
       ...quoteData,
       quotationItems: newQuoteItems,
     })
+  }
+
+  const handleUpload = async () => {
+    if (!quoteData) return
+
+    try {
+      setUploadStatus("loading")
+
+      const htmlContent = generateQuoteDoc(quoteData, recipientName)
+      const blob = new Blob([htmlContent], { type: "application/msword" })
+      const formData = new FormData()
+      formData.append("file", blob, "quote.doc")
+      formData.append("format", "doc")
+
+      const response = await fetch("https://n8n.rockship.co/webhook/send-quote", {
+        method: "POST",
+        body: formData,
+      })
+
+      if (!response.ok) {
+        throw new Error("Upload failed")
+      }
+
+      setUploadStatus("success")
+      const result = await response.json()
+      console.log("Upload successful:", result)
+    } catch (error) {
+      console.error("Error uploading quote:", error)
+      setUploadStatus("error")
+    } finally {
+      setTimeout(() => setUploadStatus("idle"), 3000)
+    }
   }
 
   return (
@@ -249,7 +204,7 @@ Please return only a valid JSON object using this schema:
                   <FormLabel>Platform</FormLabel>
                   <FormControl>
                     <Select>
-                      <SelectTrigger className="text-background">
+                      <SelectTrigger className="text-black">
                         <SelectValue placeholder="Select platform" />
                       </SelectTrigger>
                       <SelectContent>
@@ -300,19 +255,40 @@ Please return only a valid JSON object using this schema:
                 </Button>
               </>
             ) : (
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => setIsEditing(true)}
-                className="flex items-center gap-2"
-              >
-                <Edit2 className="h-4 w-4" /> Edit
-              </Button>
+              <>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setIsEditing(true)}
+                  className="flex items-center gap-2"
+                >
+                  <Edit2 className="h-4 w-4" /> Edit
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={handleUpload}
+                  disabled={uploadStatus === "loading"}
+                  className={`flex items-center gap-2 ${
+                    uploadStatus === "success" ? "text-green-500" : uploadStatus === "error" ? "text-red-500" : ""
+                  }`}
+                >
+                  <Upload className="h-4 w-4" />
+                  {uploadStatus === "loading"
+                    ? "Uploading..."
+                    : uploadStatus === "success"
+                    ? "Uploaded!"
+                    : uploadStatus === "error"
+                    ? "Failed!"
+                    : "Upload"}
+                </Button>
+              </>
             )}
           </div>
 
           <div className="flex items-start justify-between mb-8">
             <div>
+              <Image src={Logo} alt="Rockship" width={100} height={100} />
               <h1 className="text-xl font-bold mb-2">Rockship Pte. Ltd.</h1>
               <p className="text-muted-foreground">OXLEY BIZHUB, 73 UBI ROAD 1, #08-54, Postal 408733</p>
             </div>
