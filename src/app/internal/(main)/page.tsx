@@ -1,7 +1,7 @@
 "use client"
 
 import { Card } from "@/components/ui/card"
-import { Users, UserCheck, FileText, Calendar } from "lucide-react"
+import { Users, UserCheck, FileText, Calendar, Home } from "lucide-react"
 import { RecentActivities } from "@/components/internal/dashboard/RecentActivities"
 import { AttendanceChart } from "@/components/internal/dashboard/AttendanceChart"
 import { cn } from "@/lib/utils"
@@ -47,18 +47,23 @@ export default function DashboardPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-semibold">Dashboard</h1>
-        <p className="text-gray-500 mt-1">Hello Admin, this is the overview of the company.</p>
+        <div className="flex items-center gap-3">
+          <div className="h-8 w-8 rounded-lg bg-orange-100 dark:bg-orange-500/20 text-orange-600 dark:text-orange-400 flex items-center justify-center">
+            <Home className="h-5 w-5" />
+          </div>
+          <h1 className="text-xl lg:text-2xl font-semibold text-foreground">Dashboard</h1>
+        </div>
+        <p className="text-muted-foreground mt-1">Hello Admin, this is the overview of the company.</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {stats.map((stat) => (
-          <Card key={stat.title} className="relative overflow-hidden">
+          <Card key={stat.title} className="relative overflow-hidden bg-card">
             <div className="p-6">
               <div className="flex justify-between">
                 <div>
-                  <p className="text-sm text-gray-500">{stat.title}</p>
-                  <h3 className="text-2xl font-semibold mt-2">{stat.value}</h3>
+                  <p className="text-sm text-muted-foreground">{stat.title}</p>
+                  <h3 className="text-2xl font-semibold mt-2 text-foreground">{stat.value}</h3>
                   {stat.change && (
                     <p
                       className={cn(
@@ -67,17 +72,17 @@ export default function DashboardPage() {
                       )}
                     >
                       {stat.change}
-                      <span className="text-gray-500">{stat.description}</span>
+                      <span className="text-muted-foreground">{stat.description}</span>
                     </p>
                   )}
-                  {!stat.change && <p className="text-sm mt-2 text-gray-500">{stat.description}</p>}
+                  {!stat.change && <p className="text-sm mt-2 text-muted-foreground">{stat.description}</p>}
                 </div>
                 <div
                   className={cn("h-12 w-12 rounded-full flex items-center justify-center", {
-                    "bg-blue-50 text-blue-600": stat.color === "blue",
-                    "bg-green-50 text-green-600": stat.color === "green",
-                    "bg-purple-50 text-purple-600": stat.color === "purple",
-                    "bg-yellow-50 text-yellow-600": stat.color === "yellow",
+                    "bg-blue-100 text-blue-600 dark:bg-blue-500/20 dark:text-blue-400": stat.color === "blue",
+                    "bg-green-100 text-green-600 dark:bg-green-500/20 dark:text-green-400": stat.color === "green",
+                    "bg-purple-100 text-purple-600 dark:bg-purple-500/20 dark:text-purple-400": stat.color === "purple",
+                    "bg-yellow-100 text-yellow-600 dark:bg-yellow-500/20 dark:text-yellow-400": stat.color === "yellow",
                   })}
                 >
                   <stat.icon className="w-6 h-6" />
@@ -97,15 +102,15 @@ export default function DashboardPage() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <Card className="p-6">
-          <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+        <Card className="p-6 bg-card">
+          <h3 className="text-lg font-semibold mb-4 flex items-center gap-2 text-foreground">
             <span className="w-1.5 h-6 bg-blue-500 rounded-full"></span>
             Attendance Statistics by Day
           </h3>
           <AttendanceChart />
         </Card>
-        <Card className="p-6">
-          <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+        <Card className="p-6 bg-card">
+          <h3 className="text-lg font-semibold mb-4 flex items-center gap-2 text-foreground">
             <span className="w-1.5 h-6 bg-purple-500 rounded-full"></span>
             Recent Activities
           </h3>

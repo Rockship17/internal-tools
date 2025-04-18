@@ -63,16 +63,16 @@ export default function Login() {
   }
 
   return (
-    <div className="min-h-screen w-full flex items-center justify-center p-4 bg-gray-50">
+    <div className="min-h-screen w-full flex items-center justify-center p-4 bg-background">
       <span className="!absolute !top-20 !left-20 flex items-center gap-2">
         <RockshipBlack />
-        <span className="text-3xl font-bold font-[family-name:var(--font-dosis)]">ROCKSHIP</span>
+        <span className="text-3xl font-bold text-foreground font-[family-name:var(--font-dosis)]">ROCKSHIP</span>
       </span>
-      <div className="w-full max-w-md p-8 bg-white rounded-2xl shadow-lg">
+      <div className="w-full max-w-md p-8 bg-card rounded-2xl shadow-lg">
         <div className="flex flex-col space-y-6">
           <div className="text-center space-y-2">
-            <h1 className="text-4xl font-black text-gray-900">Welcome Back</h1>
-            <p className="text-lg text-gray-600">Login to your account to continue.</p>
+            <h1 className="text-4xl font-black text-foreground">Welcome Back</h1>
+            <p className="text-lg text-muted-foreground">Login to your account to continue.</p>
           </div>
 
           <Form {...form}>
@@ -84,9 +84,9 @@ export default function Login() {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Input className="w-full px-4 py-2 rounded-lg" placeholder="Username" {...field} />
+                      <Input className="w-full px-4 py-2 rounded-lg bg-input text-foreground" placeholder="Username" {...field} />
                     </FormControl>
-                    <FormMessage className="text-sm text-red-500" />
+                    <FormMessage className="text-sm text-destructive" />
                   </FormItem>
                 )}
               />
@@ -99,13 +99,13 @@ export default function Login() {
                   <FormItem>
                     <FormControl>
                       <Input
-                        className="w-full px-4 py-2 rounded-lg"
+                        className="w-full px-4 py-2 rounded-lg bg-input text-foreground"
                         type="password"
                         placeholder="Password"
                         {...field}
                       />
                     </FormControl>
-                    <FormMessage className="text-sm text-red-500" />
+                    <FormMessage className="text-sm text-destructive" />
                   </FormItem>
                 )}
               />
@@ -120,19 +120,19 @@ export default function Login() {
                         <Checkbox
                           checked={field.value}
                           onCheckedChange={field.onChange}
-                          className="rounded border-gray-300"
+                          className="rounded border-border"
                         />
                       </FormControl>
-                      <FormLabel className="text-sm text-gray-600">Remember me</FormLabel>
+                      <FormLabel className="text-sm text-muted-foreground">Remember me</FormLabel>
                     </FormItem>
                   )}
                 />
-                <Link href="/forgot-password" className="text-sm">
+                <Link href="/forgot-password" className="text-sm text-primary hover:text-primary/90">
                   Forgot password?
                 </Link>
               </div>
 
-              <Button type="submit" className="w-full py-3 px-4 rounded-full h-12" disabled={loading}>
+              <Button type="submit" className="w-full py-3 px-4 rounded-full h-12 bg-primary text-primary-foreground hover:bg-primary/90" disabled={loading}>
                 {loading ? "Signing in..." : "Sign In"}
               </Button>
             </form>

@@ -67,16 +67,16 @@ export function EmployeeTable() {
   return (
     <div>
       {/* Desktop View */}
-      <div className="hidden lg:block rounded-lg border bg-card shadow-sm">
-        <Table className="bg-card-foreground">
-          <TableHeader>
+      <div className="hidden lg:block rounded-lg border shadow-sm">
+        <Table className="bg-card">
+          <TableHeader className="bg-primary">
             <TableRow className="hover:bg-muted-foreground/50">
-              <TableHead>Employee</TableHead>
-              <TableHead>Department</TableHead>
-              <TableHead>Position</TableHead>
-              <TableHead>Start Date</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead className="w-[100px]">Actions</TableHead>
+              <TableHead className="text-primary-foreground">Employee</TableHead>
+              <TableHead className="text-primary-foreground">Department</TableHead>
+              <TableHead className="text-primary-foreground">Position</TableHead>
+              <TableHead className="text-primary-foreground">Start Date</TableHead>
+              <TableHead className="text-primary-foreground">Status</TableHead>
+              <TableHead className="text-primary-foreground w-[100px]">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -102,8 +102,8 @@ export function EmployeeTable() {
                     {employee.department}
                   </div>
                 </TableCell>
-                <TableCell>{employee.position}</TableCell>
-                <TableCell>{employee.startDate}</TableCell>
+                <TableCell className="text-primary-foreground">{employee.position}</TableCell>
+                <TableCell className="text-primary-foreground">{employee.startDate}</TableCell>
                 <TableCell>
                   <Badge
                     variant={employee.status === "active" ? "default" : "secondary"}
@@ -122,7 +122,7 @@ export function EmployeeTable() {
                     <DropdownMenuTrigger className="hover:bg-muted-foreground p-1 rounded-md">
                       <MoreHorizontal className="w-5 h-5" />
                     </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end" className="bg-card-foreground">
+                    <DropdownMenuContent align="end" className="bg-input text-foreground">
                       <DropdownMenuItem className="text-blue-600">View Details</DropdownMenuItem>
                       <DropdownMenuItem className="text-yellow-600">Edit</DropdownMenuItem>
                       <DropdownMenuItem className="text-red-600">Delete</DropdownMenuItem>
@@ -138,7 +138,7 @@ export function EmployeeTable() {
       {/* Mobile View */}
       <div className="lg:hidden space-y-4">
         {employees.map((employee) => (
-          <Card key={employee.id} className="bg-card-foreground rounded-lg border p-4 space-y-4">
+          <Card key={employee.id} className="bg-card rounded-lg border p-4 space-y-4">
             <div className="flex items-start justify-between">
               <div className="flex items-center gap-3">
                 <Avatar className="h-12 w-12">
@@ -156,7 +156,7 @@ export function EmployeeTable() {
                 <DropdownMenuTrigger className="hover:bg-muted-foreground p-1 rounded-md">
                   <MoreHorizontal className="w-5 h-5" />
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
+                <DropdownMenuContent align="end" className="bg-input text-foreground">
                   <DropdownMenuItem className="text-blue-600">View Details</DropdownMenuItem>
                   <DropdownMenuItem className="text-yellow-600">Edit</DropdownMenuItem>
                   <DropdownMenuItem className="text-red-600">Delete</DropdownMenuItem>

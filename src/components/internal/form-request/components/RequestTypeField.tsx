@@ -18,7 +18,7 @@ export function RequestTypeField({ form }: RequestTypeFieldProps) {
           <FormLabel>Request Type *</FormLabel>
           <Select onValueChange={field.onChange} defaultValue={field.value}>
             <FormControl>
-              <SelectTrigger className="text-black">
+              <SelectTrigger className="bg-input text-foreground">
                 <SelectValue placeholder="Select request type" />
               </SelectTrigger>
             </FormControl>

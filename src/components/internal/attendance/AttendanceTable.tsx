@@ -73,7 +73,7 @@ export function AttendanceTable() {
       {/* Mobile Card View */}
       <div className="grid grid-cols-1 gap-4 lg:hidden">
         {employees.map((employee) => (
-          <div key={employee.id} className="rounded-lg border bg-background p-4 shadow-sm">
+          <div key={employee.id} className="rounded-lg border bg-card p-4 shadow-sm">
             <div className="flex items-start justify-between">
               <div className="flex items-center gap-3">
                 <Avatar>
@@ -141,16 +141,16 @@ export function AttendanceTable() {
       </div>
 
       {/* Desktop Table View */}
-      <div className="hidden lg:block rounded-lg border bg-background shadow-sm">
-        <Table className="bg-background">
-          <TableHeader>
+      <div className="hidden lg:block rounded-lg border shadow-sm">
+        <Table className="bg-card">
+          <TableHeader className="bg-primary">
             <TableRow className="hover:bg-gray-50/50">
-              <TableHead>Employee</TableHead>
-              <TableHead>Department</TableHead>
-              <TableHead>Check-in</TableHead>
-              <TableHead>Check-out</TableHead>
-              <TableHead>Working Hours</TableHead>
-              <TableHead>Status</TableHead>
+              <TableHead className="text-primary-foreground">Employee</TableHead>
+              <TableHead className="text-primary-foreground">Department</TableHead>
+              <TableHead className="text-primary-foreground">Check-in</TableHead>
+              <TableHead className="text-primary-foreground">Check-out</TableHead>
+              <TableHead className="text-primary-foreground">Working Hours</TableHead>
+              <TableHead className="text-primary-foreground">Status</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>

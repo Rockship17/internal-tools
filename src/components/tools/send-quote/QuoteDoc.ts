@@ -112,7 +112,7 @@ export const generateQuoteDoc = (quoteData: QuoteData, recipientName: string): s
     <table class="company-info">
       <tr>
         <td style="width: 60%;">
-          <img src="https://internal-tools-rockship.s3.ap-southeast-1.amazonaws.com/rockship-logo.jpg" alt="logo" class="company-logo"><br>
+          <img src="https://glenvill-bucket.s3.ap-southeast-1.amazonaws.com/rockship-logo.jpg" alt="logo" class="company-logo"><br>
           <strong>${quoteData.company.name}</strong><br>
           ${quoteData.company.address}
         </td>

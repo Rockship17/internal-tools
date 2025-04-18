@@ -129,7 +129,7 @@ export default function SendQuoteForm() {
 
   return (
     <div className="flex flex-col md:flex-row gap-4">
-      <Card className="p-6 mt-6 bg-background flex-1">
+      <Card className="p-6 mt-6 bg-card border-border flex-1">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             <div className="grid gap-6 md:grid-cols-2">
@@ -138,9 +138,13 @@ export default function SendQuoteForm() {
                 name="projectName"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Project Name</FormLabel>
+                    <FormLabel className="text-foreground">Project Name</FormLabel>
                     <FormControl>
-                      <Input placeholder="Enter project name" {...field} />
+                      <Input
+                        placeholder="Enter project name"
+                        className="bg-input text-foreground border-border"
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -152,9 +156,13 @@ export default function SendQuoteForm() {
                 name="clientName"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Client Name</FormLabel>
+                    <FormLabel className="text-foreground">Client Name</FormLabel>
                     <FormControl>
-                      <Input placeholder="Enter client name" {...field} />
+                      <Input
+                        placeholder="Enter client name"
+                        className="bg-input text-foreground border-border"
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -166,9 +174,14 @@ export default function SendQuoteForm() {
                 name="budget"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Expected Budget (VND)</FormLabel>
+                    <FormLabel className="text-foreground">Expected Budget (VND)</FormLabel>
                     <FormControl>
-                      <Input type="number" placeholder="Enter budget in VND" {...field} />
+                      <Input
+                        type="number"
+                        placeholder="Enter budget in VND"
+                        className="bg-input text-foreground border-border"
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -180,9 +193,13 @@ export default function SendQuoteForm() {
                 name="expectedTimeline"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Expected Timeline</FormLabel>
+                    <FormLabel className="text-foreground">Expected Timeline</FormLabel>
                     <FormControl>
-                      <Input placeholder="e.g., 1 month, 2 weeks" {...field} />
+                      <Input
+                        placeholder="e.g., 1 month, 2 weeks"
+                        className="bg-input text-foreground border-border"
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -195,9 +212,13 @@ export default function SendQuoteForm() {
               name="projectDescription"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Project Description</FormLabel>
+                  <FormLabel className="text-foreground">Project Description</FormLabel>
                   <FormControl>
-                    <Textarea placeholder="Describe your project in detail" className="min-h-[400px]" {...field} />
+                    <Textarea
+                      placeholder="Describe your project in detail"
+                      className="min-h-[400px] bg-input text-foreground border-border"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -207,193 +228,172 @@ export default function SendQuoteForm() {
             <FormField
               control={form.control}
               name="platform"
-              render={() => (
+              render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Platform</FormLabel>
-                  <FormControl>
-                    <Select>
-                      <SelectTrigger className="text-black">
+                  <FormLabel className="text-foreground">Platform</FormLabel>
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <FormControl>
+                      <SelectTrigger className="bg-input text-foreground border-border">
                         <SelectValue placeholder="Select platform" />
                       </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="web">Web</SelectItem>
-                        <SelectItem value="mobile">Mobile</SelectItem>
-                        <SelectItem value="chatbot">Chatbot</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </FormControl>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="web">Web Application</SelectItem>
+                      <SelectItem value="mobile">Mobile Application</SelectItem>
+                      <SelectItem value="chatbot">Chatbot</SelectItem>
+                    </SelectContent>
+                  </Select>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <div className="flex justify-end">
-              <Button
-                type="submit"
-                size="lg"
-                disabled={isLoading}
-                className="bg-foreground text-background hover:bg-foreground/90"
-              >
-                {isLoading ? "Generating..." : "Generate Quote"}
-              </Button>
-            </div>
+
+            <Button
+              type="submit"
+              className="w-full bg-primary text-primary-foreground hover:bg-primary/90"
+              disabled={isLoading}
+            >
+              {isLoading ? "Generating..." : "Generate Quote"}
+            </Button>
           </form>
         </Form>
       </Card>
 
-      {isLoading ? null : quoteData ? (
-        <Card className="p-6 mt-6 bg-background relative ml-4 flex-1">
-          <div className="absolute top-4 right-4 flex gap-2">
-            {isEditing ? (
-              <>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => setIsEditing(false)}
-                  className="flex items-center gap-2"
-                >
-                  <Save className="h-4 w-4" /> Save
-                </Button>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => setIsEditing(false)}
-                  className="flex items-center gap-2 text-red-500 hover:text-red-600"
-                >
-                  <X className="h-4 w-4" /> Cancel
-                </Button>
-              </>
-            ) : (
-              <>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => setIsEditing(true)}
-                  className="flex items-center gap-2"
-                >
-                  <Edit2 className="h-4 w-4" /> Edit
-                </Button>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={handleUpload}
-                  disabled={uploadStatus === "loading"}
-                  className={`flex items-center gap-2 ${
-                    uploadStatus === "success" ? "text-green-500" : uploadStatus === "error" ? "text-red-500" : ""
-                  }`}
-                >
+      {quoteData && (
+        <Card className="p-6 mt-6 bg-card border-border flex-1">
+          <div className="flex justify-between items-center mb-6">
+            <h2 className="text-xl font-semibold text-foreground">Generated Quote</h2>
+            <div className="flex gap-2">
+              <Button
+                variant="outline"
+                size="icon"
+                className="border-border text-foreground hover:bg-accent"
+                onClick={() => setIsEditing(!isEditing)}
+              >
+                <Edit2 className="h-4 w-4" />
+              </Button>
+              <Button
+                variant="outline"
+                size="icon"
+                className="border-border text-foreground hover:bg-accent"
+                onClick={handleUpload}
+                disabled={uploadStatus === "loading"}
+              >
+                {uploadStatus === "loading" ? (
+                  <div className="animate-spin">...</div>
+                ) : uploadStatus === "success" ? (
+                  <Save className="h-4 w-4 text-green-500" />
+                ) : uploadStatus === "error" ? (
+                  <X className="h-4 w-4 text-red-500" />
+                ) : (
                   <Upload className="h-4 w-4" />
-                  {uploadStatus === "loading"
-                    ? "Uploading..."
-                    : uploadStatus === "success"
-                    ? "Uploaded!"
-                    : uploadStatus === "error"
-                    ? "Failed!"
-                    : "Upload"}
-                </Button>
-              </>
-            )}
-          </div>
-
-          <div className="flex items-start justify-between mb-8">
-            <div>
-              <img
-                src="https://internal-tools-rockship.s3.ap-southeast-1.amazonaws.com/rockship-logo.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=ASIAW3MEALFEHZM4E23L%2F20250418%2Fap-southeast-1%2Fs3%2Faws4_request&X-Amz-Date=20250418T035803Z&X-Amz-Expires=300&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEOT%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaDmFwLXNvdXRoZWFzdC0xIkcwRQIgHlMj8KSUS9wneosPxkUEFGD1t%2Fz1c9apw66fMitWbyMCIQDy0EHduMEwcEfQVJzWMvywQmqwZeKsw0y7k7HalCkTEir3AghtEAAaDDQ3MTExMjYzNjc0NCIMsulrHw2SLeWQZGqAKtQC3UJuNhtoRJY4nUaYQtrlleMIm%2BJforKV1UzxMTSjnQLwd42RKQsGg36Gqd5JLhGA7jnh2Q%2BMuqWWRK0K8ub0RzIRTsDRo61t2JjKPmfKiZrH8NGEivKuwPKVDhkbHBvKKG7qLropbZ7bAmC8rEld8%2FPZ5ymxha0EKcHGphK8utAf%2Bah3dEzBs1UhFZSwoctJVwyYMpmRsDd1wCUrk5mY0uXMuAcLYmfJwBMwNGJp9pg5%2B5Ml7mptG%2BHG4NHl%2BC68vyTWbhvkXdGba5%2FjkjQHvAAgqCyQC2pLlz9PBuxbAgc5VCpFcEvokDCzXYFj1IxNiBjKjHH70A9ga1Ni6kt5ZHVe%2Ffc2hfilEE7ACoUDAz9GWSZebVVD1tfEMahLJAvuV4GOPWkZxa17od%2FLZ%2BjLe8Pa6DUGvNqEnaywc6KwHPAFPOrnrZLnOs0phgqpdsebhj0JGTCJmIfABjqtAjg0p3T8v45uSYLPx5pNi930Tc86HA0aD4Hpxi9FyKxf4LGTJIEvVNQ8T5KtV7Aumpz%2FFHuRniNWGjwUt%2FIuk7VtzD0wPvLR2gygQmfcSWc87tfZknpVQjxqgoyad4tZsfMe1Fn3lBbICLfpGx9xVivuwpl4IWYVYBw59LgSm%2FqwhdzCJd7x1yaHGlmto3E42pAufZmR5F%2FBPblBmHwLM26atIVfzb3cz%2FA7r3lEr9rBPHbV6IYiocI72qbj4lJCSH5xTZQs5%2BBDk4HB2GP95KDRrMv6xlOzoUltGD%2B%2BPLaOXHBE%2FAH%2Bw6HBn086co3MilTYw0afWhBEykcvXOv5LbdL6N%2FevgUgaIHPxF3ESY566ntrk9FWx9TmTvJlwYD77f5R3%2BXT6j6SK4j768U%3D&X-Amz-Signature=9b6f639f75c0ed445738fd6326d869a91ba737a500a85b6ce3490591e0a88418&X-Amz-SignedHeaders=host&response-content-disposition=inline"
-                alt="Rockship"
-                className="w-16 h-16"
-              />
-              <h1 className="text-xl font-bold mb-2">Rockship Pte. Ltd.</h1>
-              <p className="text-muted-foreground">OXLEY BIZHUB, 73 UBI ROAD 1, #08-54, Postal 408733</p>
-            </div>
-            <div>
-              <h2 className="text-2xl font-bold uppercase underline">QUOTATION</h2>
+                )}
+              </Button>
             </div>
           </div>
 
-          <div className="mb-8">
-            {isEditing ? (
-              <Input
-                value={recipientName}
-                onChange={(e) => setRecipientName(e.target.value)}
-                className="w-64"
-                placeholder="Recipient Name"
-              />
-            ) : (
-              <p className="font-semibold">To: {recipientName}</p>
-            )}
-          </div>
+          <div className="space-y-6">
+            <div className="flex items-start justify-between mb-8">
+              <div>
+                <img
+                  src="https://glenvill-bucket.s3.ap-southeast-1.amazonaws.com/rockship-logo.jpg"
+                  alt="Rockship"
+                  className="w-16 h-16"
+                />
+                <h1 className="text-xl font-bold mb-2">Rockship Pte. Ltd.</h1>
+                <p className="text-muted-foreground">OXLEY BIZHUB, 73 UBI ROAD 1, #08-54, Postal 408733</p>
+              </div>
+              <div>
+                <h2 className="text-2xl font-bold uppercase underline">QUOTATION</h2>
+              </div>
+            </div>
 
-          <div className="overflow-x-auto">
-            <table className="w-full border-collapse">
-              <thead>
-                <tr className="bg-foreground text-background">
-                  <th className="border p-3 text-left">No.</th>
-                  <th className="border p-3 text-left">Item</th>
-                  <th className="border p-3 text-left">Mandays</th>
-                  <th className="border p-3 text-left">Cost (mil VND)</th>
-                </tr>
-              </thead>
-              <tbody>
-                {quoteData.quotationItems.map((item, index) => (
-                  <tr key={item.no}>
-                    <td className="border p-3">{item.no}</td>
-                    <td className="border p-3">
-                      {isEditing ? (
-                        <Input
-                          value={item.item}
-                          onChange={(e) => handleItemChange(index, "item", e.target.value)}
-                          className="w-full"
-                        />
-                      ) : (
-                        item.item
-                      )}
-                    </td>
-                    <td className="border p-3">
-                      {isEditing ? (
-                        <Input
-                          type="number"
-                          value={item.mandays}
-                          onChange={(e) => handleItemChange(index, "mandays", e.target.value)}
-                          className="w-full"
-                        />
-                      ) : (
-                        item.mandays
-                      )}
-                    </td>
-                    <td className="border p-3">
-                      {isEditing ? (
-                        <Input
-                          type="number"
-                          value={item.costMilVND}
-                          onChange={(e) => handleItemChange(index, "costMilVND", e.target.value)}
-                          className="w-full"
-                        />
-                      ) : (
-                        item.costMilVND
-                      )}
-                    </td>
+            <div className="mb-8">
+              {isEditing ? (
+                <Input
+                  value={recipientName}
+                  onChange={(e) => setRecipientName(e.target.value)}
+                  className="w-64"
+                  placeholder="Recipient Name"
+                />
+              ) : (
+                <p className="font-semibold">To: {recipientName}</p>
+              )}
+            </div>
+
+            <div className="overflow-x-auto">
+              <table className="w-full border-collapse">
+                <thead>
+                  <tr className="bg-foreground text-background">
+                    <th className="border p-3 text-left">No.</th>
+                    <th className="border p-3 text-left">Item</th>
+                    <th className="border p-3 text-left">Mandays</th>
+                    <th className="border p-3 text-left">Cost (mil VND)</th>
                   </tr>
-                ))}
-                <tr className="bg-foreground text-background font-semibold">
-                  <td colSpan={2} className="border p-3">
-                    Total one-time cost
-                  </td>
-                  <td className="border p-3">{quoteData.totalMandays}</td>
-                  <td className="border p-3">{quoteData.totalOneTimeCostMilVND}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody>
+                  {quoteData.quotationItems.map((item, index) => (
+                    <tr key={item.no}>
+                      <td className="border p-3">{item.no}</td>
+                      <td className="border p-3">
+                        {isEditing ? (
+                          <Input
+                            value={item.item}
+                            onChange={(e) => handleItemChange(index, "item", e.target.value)}
+                            className="w-full"
+                          />
+                        ) : (
+                          item.item
+                        )}
+                      </td>
+                      <td className="border p-3">
+                        {isEditing ? (
+                          <Input
+                            type="number"
+                            value={item.mandays}
+                            onChange={(e) => handleItemChange(index, "mandays", e.target.value)}
+                            className="w-full"
+                          />
+                        ) : (
+                          item.mandays
+                        )}
+                      </td>
+                      <td className="border p-3">
+                        {isEditing ? (
+                          <Input
+                            type="number"
+                            value={item.costMilVND}
+                            onChange={(e) => handleItemChange(index, "costMilVND", e.target.value)}
+                            className="w-full"
+                          />
+                        ) : (
+                          item.costMilVND
+                        )}
+                      </td>
+                    </tr>
+                  ))}
+                  <tr className="bg-foreground text-background font-semibold">
+                    <td colSpan={2} className="border p-3">
+                      Total one-time cost
+                    </td>
+                    <td className="border p-3">{quoteData.totalMandays}</td>
+                    <td className="border p-3">{quoteData.totalOneTimeCostMilVND}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
 
-          <div className="mt-8">
-            <h3 className="font-semibold mb-2">Notes:</h3>
-            <ul className="list-disc list-inside">
-              {quoteData.notes.map((note, index) => (
-                <li key={index}>{note}</li>
-              ))}
-            </ul>
+            <div className="mt-8">
+              <h3 className="font-semibold mb-2">Notes:</h3>
+              <ul className="list-disc list-inside">
+                {quoteData.notes.map((note, index) => (
+                  <li key={index}>{note}</li>
+                ))}
+              </ul>
+            </div>
           </div>
         </Card>
-      ) : null}
+      )}
     </div>
   )
 }

@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useState } from "react"
-import { Form, Select, DatePicker, Checkbox, message } from "antd"
+import { Form, DatePicker, Checkbox, message } from "antd"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import {
@@ -11,6 +11,7 @@ import {
   EnvironmentOutlined,
   ClockCircleOutlined,
 } from "@ant-design/icons"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 
 const { RangePicker } = DatePicker
 
@@ -56,14 +57,12 @@ export default function FormOfferLetter() {
   }
 
   return (
-    <div className="py-12">
+    <div className="py-12 bg-background">
       <div className="container mx-auto">
-        <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
-          <div className="bg-black px-8 py-6 text-white">
+        <div className="bg-card rounded-2xl shadow-lg overflow-hidden border border-border">
+          <div className="bg-primary px-8 py-6 text-primary-foreground">
             <h1 className="text-3xl font-black tracking-tight">Offer Letter Details</h1>
-            <p className="text-blue-100 mt-1 text-sm">
-              Complete the form below to generate a professional offer letter
-            </p>
+            <p className="text-muted mt-1 text-sm">Complete the form below to generate a professional offer letter</p>
           </div>
           <div className="p-8">
             <Form
@@ -83,57 +82,67 @@ export default function FormOfferLetter() {
               }}
             >
               <div>
-                <h3 className="text-lg font-medium text-gray-800 mb-4 flex items-center">
-                  <UserOutlined className="mr-2 text-indigo-500" />
+                <h3 className="text-lg font-medium text-foreground mb-4 flex items-center">
+                  <UserOutlined className="mr-2 text-primary" />
                   Personal Information
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <Form.Item
-                    label="Email Address"
+                    label={<span className="text-foreground">Email Address</span>}
                     name="email"
                     required
                     rules={[{ required: true, message: "Please input your email!" }]}
                   >
-                    <Input placeholder="Enter email address" className="rounded-lg" />
+                    <Input
+                      placeholder="Enter email address"
+                      className="rounded-lg bg-input text-foreground border-border"
+                    />
                   </Form.Item>
                   <Form.Item
-                    label="Full Name"
+                    label={<span className="text-foreground">Full Name</span>}
                     name="full_name"
                     rules={[{ required: true, message: "Please input your full name!" }]}
                   >
-                    <Input placeholder="Enter full name" className="rounded-lg" />
+                    <Input
+                      placeholder="Enter full name"
+                      className="rounded-lg bg-input text-foreground border-border"
+                    />
                   </Form.Item>
                 </div>
               </div>
               <div>
-                <h3 className="text-lg font-medium text-gray-800 mb-4 flex items-center">
-                  <BankOutlined className="mr-2 text-indigo-500" />
+                <h3 className="text-lg font-medium text-foreground mb-4 flex items-center">
+                  <BankOutlined className="mr-2 text-primary" />
                   Position Details
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <Form.Item
-                    label="Position"
+                    label={<span className="text-foreground">Position</span>}
                     name="position"
                     rules={[{ required: true, message: "Please select a position!" }]}
                   >
                     <Select
-                      placeholder="Select a position"
-                      className="rounded-lg"
-                      dropdownStyle={{ borderRadius: "0.5rem" }}
+                      onValueChange={(value) => form.setFieldValue("position", value)}
+                      defaultValue={form.getFieldValue("position")}
                     >
-                      <Select.Option value="Frontend Engineer">Frontend Engineer</Select.Option>
-                      <Select.Option value="Backend Engineer">Backend Engineer</Select.Option>
-                      <Select.Option value="AI Engineer">AI Engineer</Select.Option>
-                      <Select.Option value="Data Engineer">Data Engineer</Select.Option>
-                      <Select.Option value="Designer">Designer</Select.Option>
-                      <Select.Option value="QA">QA</Select.Option>
+                      <SelectTrigger className="rounded-lg bg-input text-foreground border-border">
+                        <SelectValue placeholder="Select a position" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="Frontend Engineer">Frontend Engineer</SelectItem>
+                        <SelectItem value="Backend Engineer">Backend Engineer</SelectItem>
+                        <SelectItem value="AI Engineer">AI Engineer</SelectItem>
+                        <SelectItem value="Data Engineer">Data Engineer</SelectItem>
+                        <SelectItem value="Designer">Designer</SelectItem>
+                        <SelectItem value="QA">QA</SelectItem>
+                      </SelectContent>
                     </Select>
                   </Form.Item>
 
                   <div className="flex items-end">
                     <Form.Item
                       className="flex-1 mr-2"
-                      label="Salary"
+                      label={<span className="text-foreground">Salary</span>}
                       name="salary"
                       rules={[{ required: true, message: "Please input salary!" }]}
                     >
@@ -145,12 +154,17 @@ export default function FormOfferLetter() {
                           const formattedValue = value ? new Intl.NumberFormat().format(Number(value)) : ""
                           form.setFieldValue("salary", formattedValue)
                         }}
-                        className="text-right rounded-lg"
+                        className="text-right rounded-lg bg-input text-foreground border-border"
                       />
                     </Form.Item>
                     <Form.Item name="salary_format" className="w-20">
-                      <Select className="rounded-lg">
-                        <Select.Option value="vnd">VND</Select.Option>
+                      <Select onValueChange={(value) => form.setFieldValue("salary_format", value)} defaultValue="vnd">
+                        <SelectTrigger className="rounded-lg bg-input text-foreground border-border">
+                          <SelectValue placeholder="VND" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="vnd">VND</SelectItem>
+                        </SelectContent>
                       </Select>
                     </Form.Item>
                   </div>
@@ -158,19 +172,18 @@ export default function FormOfferLetter() {
 
                 <Form.Item name="intern" valuePropName="checked" className="mt-2">
                   <Checkbox onChange={(e) => setIsIntern(e.target.checked)}>
-                    <span className="text-gray-700">Intern Position</span>
+                    <span className="text-foreground">Intern Position</span>
                   </Checkbox>
                 </Form.Item>
               </div>
 
-              {/* Probation Period Section */}
               <div>
-                <h3 className="text-lg font-medium text-gray-800 mb-4 flex items-center">
-                  <ClockCircleOutlined className="mr-2 text-indigo-500" />
+                <h3 className="text-lg font-medium text-foreground mb-4 flex items-center">
+                  <ClockCircleOutlined className="mr-2 text-primary" />
                   Probation Period
                 </h3>
                 <Form.Item
-                  label="Select Period"
+                  label={<span className="text-foreground">Select Period</span>}
                   name="probation_period"
                   required={!isIntern}
                   rules={[
@@ -181,7 +194,7 @@ export default function FormOfferLetter() {
                   ]}
                 >
                   <RangePicker
-                    className="w-full rounded-lg"
+                    className="w-full rounded-lg bg-input text-foreground border-border"
                     format="DD-MM-YYYY"
                     placeholder={["Start Date", "End Date"]}
                     disabled={isIntern}
@@ -189,15 +202,14 @@ export default function FormOfferLetter() {
                 </Form.Item>
               </div>
 
-              {/* Additional Details Section */}
               <div>
-                <h3 className="text-lg font-medium text-gray-800 mb-4 flex items-center">
-                  <CalendarOutlined className="mr-2 text-indigo-500" />
+                <h3 className="text-lg font-medium text-foreground mb-4 flex items-center">
+                  <CalendarOutlined className="mr-2 text-primary" />
                   Additional Details
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <Form.Item
-                    label="Holidays (days per year)"
+                    label={<span className="text-foreground">Holidays (days per year)</span>}
                     name="holiday_days"
                     required={!isIntern}
                     rules={[
@@ -207,40 +219,49 @@ export default function FormOfferLetter() {
                       },
                     ]}
                   >
-                    <Input placeholder="Enter holidays" className="rounded-lg" disabled={isIntern} />
+                    <Input
+                      placeholder="Enter holidays"
+                      className="rounded-lg bg-input text-foreground border-border"
+                      disabled={isIntern}
+                    />
                   </Form.Item>
                   <Form.Item
-                    label="Start Date"
+                    label={<span className="text-foreground">Start Date</span>}
                     name="start_day"
                     rules={[{ required: true, message: "Please select start date!" }]}
                   >
-                    <DatePicker className="w-full rounded-lg" format="DD-MM-YYYY" placeholder="Select start date" />
+                    <DatePicker
+                      className="w-full rounded-lg bg-input text-foreground border-border"
+                      format="DD-MM-YYYY"
+                      placeholder="Select start date"
+                    />
                   </Form.Item>
                 </div>
               </div>
 
-              {/* Office Address Section */}
               <div>
-                <h3 className="text-lg font-medium text-gray-800 mb-4 flex items-center">
-                  <EnvironmentOutlined className="mr-2 text-indigo-500" />
+                <h3 className="text-lg font-medium text-foreground mb-4 flex items-center">
+                  <EnvironmentOutlined className="mr-2 text-primary" />
                   Office Address
                 </h3>
                 <Form.Item
-                  label="Address"
+                  label={<span className="text-foreground">Address</span>}
                   name="office_address"
                   rules={[{ required: true, message: "Please input office address!" }]}
                 >
                   <Input
                     placeholder="85/18 Pham Viet Chanh, Ward 19, Binh Thanh District, Ho Chi Minh City"
-                    defaultValue={defaultValue}
-                    className="rounded-lg"
+                    className="rounded-lg bg-input text-foreground border-border"
                   />
                 </Form.Item>
               </div>
 
-              {/* Submit Button */}
-              <div className="pt-6 border-t border-gray-100 w-full flex justify-center">
-                <Button className="w-full md:w-auto h-12 px-8 rounded-lg bg-black border-none shadow-lg text-white">
+              <div className="pt-6 border-t border-border w-full flex justify-center">
+                <Button
+                  type="submit"
+                  className="w-full md:w-auto h-12 px-8 rounded-lg bg-primary text-primary-foreground hover:bg-primary/90"
+                  disabled={loading}
+                >
                   {loading ? "Processing..." : "Generate Offer Letter"}
                 </Button>
               </div>
@@ -248,8 +269,7 @@ export default function FormOfferLetter() {
           </div>
         </div>
 
-        {/* Footer */}
-        <div className="text-center mt-6 text-gray-500 text-xs">
+        <div className="text-center mt-6 text-muted-foreground text-xs">
           © {new Date().getFullYear()} Rockship. All rights reserved.
         </div>
       </div>

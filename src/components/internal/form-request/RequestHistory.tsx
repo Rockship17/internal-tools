@@ -78,13 +78,13 @@ export function RequestHistory() {
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
           <Input
             placeholder="Search..."
-            className="pl-9 bg-background"
+            className="pl-9 bg-input text-foreground"
             value={searchText}
             onChange={(e) => setSearchText(e.target.value)}
           />
         </div>
         <Select value={statusFilter} onValueChange={setStatusFilter}>
-          <SelectTrigger className="w-[180px] bg-background">
+          <SelectTrigger className="w-[180px] bg-input text-foreground">
             <SelectValue placeholder="All statuses" />
           </SelectTrigger>
           <SelectContent>
@@ -99,7 +99,7 @@ export function RequestHistory() {
       {/* Mobile Card View */}
       <div className="grid grid-cols-1 gap-4 lg:hidden">
         {filteredRequests.map((request) => (
-          <div key={request.id} className="rounded-lg border bg-background p-4 shadow-sm">
+          <div key={request.id} className="rounded-lg border bg-card p-4 shadow-sm">
             <div className="flex items-start justify-between">
               <div>
                 <p className="font-medium text-foreground">{requestTypes[request.type as keyof typeof requestTypes]}</p>
@@ -148,17 +148,17 @@ export function RequestHistory() {
       </div>
 
       {/* Desktop Table View */}
-      <div className="hidden lg:block rounded-lg border bg-background shadow-sm">
-        <Table className="bg-background">
-          <TableHeader>
+      <div className="hidden lg:block rounded-lg border shadow-sm">
+        <Table className="bg-card">
+          <TableHeader className="bg-primary">
             <TableRow className="hover:bg-gray-50/50">
-              <TableHead>Request Type</TableHead>
-              <TableHead>Time Period</TableHead>
-              <TableHead>Duration</TableHead>
-              <TableHead>Reason</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead>Approver</TableHead>
-              <TableHead>Approval Date</TableHead>
+              <TableHead className="text-primary-foreground">Request Type</TableHead>
+              <TableHead className="text-primary-foreground">Time Period</TableHead>
+              <TableHead className="text-primary-foreground">Duration</TableHead>
+              <TableHead className="text-primary-foreground">Reason</TableHead>
+              <TableHead className="text-primary-foreground">Status</TableHead>
+              <TableHead className="text-primary-foreground">Approver</TableHead>
+              <TableHead className="text-primary-foreground">Approval Date</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>

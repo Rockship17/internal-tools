@@ -1,22 +1,45 @@
 import React, { useState } from "react"
-import { Form, DatePicker } from "antd"
-import { UserOutlined, CalendarOutlined } from "@ant-design/icons"
+import { DatePicker } from "antd"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { toast } from "sonner"
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
+import { useForm } from "react-hook-form"
+import * as z from "zod"
+import { zodResolver } from "@hookform/resolvers/zod"
+import dayjs from "dayjs"
+import { Calendar, User } from "lucide-react"
+
+const formSchema = z.object({
+  email: z.string().email("Please enter a valid email address"),
+  full_name: z.string().min(1, "Full name is required"),
+  start_day: z.date({
+    required_error: "Please select a date and time",
+  }),
+})
+
+type FormValues = z.infer<typeof formSchema>
+
 export default function FormInviteInterview() {
-  const [form] = Form.useForm()
   const [loading, setLoading] = useState(false)
-  const onSubmit = async (values: any) => {
+  const form = useForm<FormValues>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      email: "",
+      full_name: "",
+    },
+  })
+
+  const onSubmit = async (values: FormValues) => {
     setLoading(true)
     try {
       const formData = new FormData()
       Object.keys(values).forEach((key) => {
-        if (values[key]) {
+        if (values[key as keyof FormValues]) {
           if (key === "start_day") {
-            formData.append(key, values[key].format("YYYY-MM-DD HH:mm"))
+            formData.append(key, values[key].toISOString())
           } else {
-            formData.append(key, values[key])
+            formData.append(key, values[key as keyof FormValues]?.toString() || "")
           }
         }
       })
@@ -28,7 +51,7 @@ export default function FormInviteInterview() {
 
       if (!response.ok) throw new Error("Submission failed")
       toast.success("Form submitted successfully!")
-      form.resetFields()
+      form.reset()
     } catch (error) {
       toast.error("An error occurred. Please try again.")
       console.error(error)
@@ -36,85 +59,94 @@ export default function FormInviteInterview() {
       setLoading(false)
     }
   }
+
   return (
-    <div className="min-h-screen py-12">
+    <div className="min-h-screen py-12 bg-background">
       <div className="container mx-auto">
-        <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
-          <div className="bg-gradient-to-r bg-black  px-8 py-6 text-white">
+        <div className="rounded-2xl shadow-lg overflow-hidden bg-card">
+          <div className="bg-primary px-8 py-6 text-primary-foreground">
             <h1 className="text-3xl font-black tracking-tight">Invite Interview</h1>
-            <p className="text-blue-100 mt-1 text-sm">Complete the form below to invite an interview</p>
+            <p className="mt-1 text-sm">Complete the form below to invite an interview</p>
           </div>
 
           <div className="p-8">
-            <Form
-              form={form}
-              onFinish={onSubmit}
-              layout="vertical"
-              requiredMark={true}
-              className="space-y-8"
-              initialValues={{
-                email: "",
-                full_name: "",
-                start_day: "",
-              }}
-            >
-              <div>
-                <h3 className="text-lg font-medium text-gray-800 mb-4 flex items-center">
-                  <UserOutlined className="mr-2 text-indigo-500" />
-                  Personal Information
+            <Form {...form}>
+              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                <h3 className="text-xl font-semibold flex items-center gap-2">
+                  <User className="w-4 h-4" />
+                  Candidate Information
                 </h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <Form.Item
-                    label="Email Address"
+                <div className="grid grid-cols-2 gap-4">
+                  <FormField
+                    control={form.control}
                     name="email"
-                    required
-                    rules={[{ required: true, message: "Please input your email!" }]}
-                  >
-                    <Input placeholder="Enter email address" className="rounded-lg" />
-                  </Form.Item>
-                  <Form.Item
-                    label="Full Name"
-                    name="full_name"
-                    rules={[{ required: true, message: "Please input your full name!" }]}
-                  >
-                    <Input placeholder="Enter full name" className="rounded-lg" />
-                  </Form.Item>
-                </div>
-              </div>
-              <div>
-                <h3 className="text-lg font-medium text-gray-800 mb-4 flex items-center">
-                  <CalendarOutlined className="mr-2 text-indigo-500" />
-                  Additional Details
-                </h3>
-                <Form.Item
-                  label="Start Date"
-                  name="start_day"
-                  rules={[{ required: true, message: "Please select start date!" }]}
-                >
-                  <DatePicker
-                    className="w-full rounded-lg"
-                    showTime={{ format: "HH:mm" }}
-                    format="YYYY-MM-DD HH:mm"
-                    onChange={(value, dateString) => {
-                      console.log("Selected Time: ", value)
-                      console.log("Formatted Selected Time: ", dateString)
-                    }}
-                    placeholder="Select start date"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Email Address</FormLabel>
+                        <FormControl>
+                          <Input
+                            placeholder="Enter email address"
+                            className="rounded-lg bg-input text-foreground"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
                   />
-                </Form.Item>
-              </div>
-              <div className="pt-6 border-t border-gray-100 w-full flex justify-center">
+                  <FormField
+                    control={form.control}
+                    name="full_name"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Full Name</FormLabel>
+                        <FormControl>
+                          <Input
+                            placeholder="Enter full name"
+                            className="rounded-lg bg-input text-foreground"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+                <h3 className="text-xl font-semibold flex items-center gap-2">
+                  <Calendar className="w-4 h-4" />
+                  Interview Date
+                </h3>
+                <FormField
+                  control={form.control}
+                  name="start_day"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Start Date</FormLabel>
+                      <FormControl>
+                        <DatePicker
+                          className="rounded-lg bg-input text-foreground w-full"
+                          showTime={{ format: "HH:mm" }}
+                          format="YYYY-MM-DD HH:mm"
+                          onChange={(date) => field.onChange(date?.toDate())}
+                          value={field.value ? dayjs(field.value) : null}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
                 <Button
                   type="submit"
-                  className="w-full md:w-auto h-12 px-8 rounded-lg bg-black border-none shadow-lg text-white"
+                  className="w-full cursor-pointer bg-primary text-primary-foreground"
+                  disabled={loading}
                 >
-                  {loading ? "Processing..." : "Booking interview"}
+                  {loading ? "Sending..." : "Send Invitation"}
                 </Button>
-              </div>
+              </form>
             </Form>
           </div>
         </div>
-        <div className="text-center mt-6 text-gray-500 text-xs">
+        <div className="text-center mt-6 text-muted-foreground text-xs">
           © {new Date().getFullYear()} Rockship. All rights reserved.
         </div>
       </div>

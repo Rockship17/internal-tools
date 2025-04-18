@@ -76,16 +76,16 @@ export function RequestTable({ type }: RequestTableProps) {
   return (
     <div>
       {/* Desktop View */}
-      <div className="hidden lg:block rounded-lg border bg-card shadow-sm">
+      <div className="hidden lg:block rounded-lg border shadow-sm">
         <Table className="bg-card">
-          <TableHeader>
+          <TableHeader className="bg-primary">
             <TableRow className="hover:bg-muted-foreground/50">
-              <TableHead>Employee</TableHead>
-              <TableHead>Request Type</TableHead>
-              <TableHead>Period</TableHead>
-              <TableHead>Reason</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead className="w-[100px]">Action</TableHead>
+              <TableHead className="text-primary-foreground">Employee</TableHead>
+              <TableHead className="text-primary-foreground">Request Type</TableHead>
+              <TableHead className="text-primary-foreground">Period</TableHead>
+              <TableHead className="text-primary-foreground">Reason</TableHead>
+              <TableHead className="text-primary-foreground">Status</TableHead>
+              <TableHead className="text-primary-foreground w-[100px]">Action</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>

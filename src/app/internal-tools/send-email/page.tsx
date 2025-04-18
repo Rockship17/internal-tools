@@ -6,9 +6,10 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import FormInviteInterview from "@/components/tools/invite-interview/FormInviteInterview"
 import FormRejectInterview from "@/components/tools/reject-interview/FormRejectInterview"
 import FormOfferLetter from "@/components/tools/offer-letter/FormOfferLetter"
+
 export default function SendEmail() {
   return (
-    <div className="bg-gradient-to-br">
+    <div className="min-h-screen bg-background">
       <div className="container mx-auto px-4 py-8 max-w-4xl">
         <div className="w-full">
           <div className="text-center">
@@ -18,16 +19,25 @@ export default function SendEmail() {
             </p>
           </div>
 
-          <Card className="rounded-xl !border-none shadow-none">
-            <Tabs className="!border-none" defaultValue="invite-interview">
-              <TabsList className="bg-background w-full justify-center my-4">
-                <TabsTrigger value="invite-interview" className="w-full h-12">
+          <Card className="mt-8 rounded-xl shadow-sm bg-card">
+            <Tabs defaultValue="invite-interview" className="w-full">
+              <TabsList className="w-full justify-center my-4 gap-4">
+                <TabsTrigger
+                  value="invite-interview"
+                  className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground w-full h-12"
+                >
                   Invite Interview
                 </TabsTrigger>
-                <TabsTrigger value="reject-interview" className="w-full h-12">
+                <TabsTrigger
+                  value="reject-interview"
+                  className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground w-full h-12"
+                >
                   Reject Interview
                 </TabsTrigger>
-                <TabsTrigger value="offer-letter" className="w-full h-12">
+                <TabsTrigger
+                  value="offer-letter"
+                  className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground w-full h-12"
+                >
                   Offer Letter
                 </TabsTrigger>
               </TabsList>

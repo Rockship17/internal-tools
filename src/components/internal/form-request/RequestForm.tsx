@@ -80,7 +80,7 @@ export function RequestForm() {
   }
 
   return (
-    <Card className="p-6 bg-card-foreground">
+    <Card className="p-6 bg-card">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
           <RequestTypeField form={form} />
@@ -95,7 +95,7 @@ export function RequestForm() {
                   <FormLabel>Time Off Type *</FormLabel>
                   <Select onValueChange={field.onChange} defaultValue={field.value}>
                     <FormControl>
-                      <SelectTrigger>
+                      <SelectTrigger className="bg-input text-foreground">
                         <SelectValue placeholder="Select time off type" />
                       </SelectTrigger>
                     </FormControl>
@@ -159,6 +159,7 @@ export function RequestForm() {
                     disabled
                     placeholder="Auto-calculated"
                     value={field.value ? `${field.value} ${showTimePicker ? "hours" : "days"}` : ""}
+                    className="bg-input text-foreground"
                   />
                 </FormControl>
                 <FormMessage />
@@ -174,7 +175,7 @@ export function RequestForm() {
               <FormItem>
                 <FormLabel>Reason *</FormLabel>
                 <FormControl>
-                  <Textarea placeholder="Enter reason..." className="resize-none" {...field} />
+                  <Textarea placeholder="Enter reason..." className="resize-none bg-input text-foreground" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -182,10 +183,10 @@ export function RequestForm() {
           />
 
           <div className="flex justify-end gap-4">
-            <Button variant="outline" type="reset">
+            <Button variant="outline" type="reset" className="bg-background text-foreground">
               Cancel
             </Button>
-            <Button type="submit" disabled={isSubmitting}>
+            <Button type="submit" disabled={isSubmitting} className="bg-primary text-primary-foreground">
               {isSubmitting ? "Submitting..." : "Submit Request"}
             </Button>
           </div>
