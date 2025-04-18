@@ -7,7 +7,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
 import { useForm } from "react-hook-form"
 import { Card } from "@/components/ui/card"
-import { Copy, Edit2, Share } from "lucide-react"
+import { Copy, Edit2, Share, Plus, Trash2, Save } from "lucide-react"
 import { useState } from "react"
 import { GoogleGenerativeAI } from "@google/generative-ai"
 import { Select, SelectValue, SelectTrigger, SelectContent, SelectItem } from "@/components/ui/select"
@@ -35,6 +35,7 @@ export default function SendQuoteForm() {
   const [uploadStatus, setUploadStatus] = useState<"idle" | "loading" | "success" | "error">("idle")
   const [docLink, setDocLink] = useState<string>("")
   const [isDialogOpen, setIsDialogOpen] = useState(false)
+  const [newNote, setNewNote] = useState("")
 
   const form = useForm<QuoteFormValues>({
     resolver: zodResolver(formSchema),
@@ -51,6 +52,10 @@ export default function SendQuoteForm() {
   const onSubmit = async (data: QuoteFormValues) => {
     try {
       setIsLoading(true)
+      // Reset upload status and document link when generating new quote
+      setUploadStatus("idle")
+      setDocLink("")
+
       const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" })
 
       const prompt = quotePrompt(data)
@@ -137,6 +142,75 @@ export default function SendQuoteForm() {
     }
   }
 
+  const handleAddItem = () => {
+    if (!quoteData) return
+
+    const newItem: QuoteItem = {
+      no: quoteData.quotationItems.length + 1,
+      item: "",
+      mandays: 0,
+      costMilVND: 0,
+    }
+
+    const newQuoteItems = [...quoteData.quotationItems, newItem]
+
+    setQuoteData({
+      ...quoteData,
+      quotationItems: newQuoteItems,
+    })
+  }
+
+  const handleDeleteItem = (index: number) => {
+    if (!quoteData) return
+
+    const newQuoteItems = quoteData.quotationItems.filter((_, i) => i !== index)
+    // Renumber the items
+    newQuoteItems.forEach((item, i) => {
+      item.no = i + 1
+    })
+
+    const totalMandays = newQuoteItems.reduce((sum, item) => sum + (item.mandays || 0), 0)
+    const totalOneTimeCostMilVND = newQuoteItems.reduce((sum, item) => sum + (item.costMilVND || 0), 0)
+
+    setQuoteData({
+      ...quoteData,
+      quotationItems: newQuoteItems,
+      totalMandays,
+      totalOneTimeCostMilVND,
+    })
+  }
+
+  const handleAddNote = () => {
+    if (!quoteData || !newNote.trim()) return
+
+    setQuoteData({
+      ...quoteData,
+      notes: [...quoteData.notes, newNote.trim()],
+    })
+    setNewNote("")
+  }
+
+  const handleDeleteNote = (index: number) => {
+    if (!quoteData) return
+
+    const newNotes = quoteData.notes.filter((_, i) => i !== index)
+    setQuoteData({
+      ...quoteData,
+      notes: newNotes,
+    })
+  }
+
+  const handleEditNote = (index: number, value: string) => {
+    if (!quoteData) return
+
+    const newNotes = [...quoteData.notes]
+    newNotes[index] = value
+    setQuoteData({
+      ...quoteData,
+      notes: newNotes,
+    })
+  }
+
   return (
     <div className="flex flex-col md:flex-row gap-4">
       <Card className="p-6 mt-6 bg-card border-border flex-1">
@@ -187,10 +261,14 @@ export default function SendQuoteForm() {
                     <FormLabel className="text-foreground">Expected Budget (VND)</FormLabel>
                     <FormControl>
                       <Input
-                        type="number"
                         placeholder="Enter budget in VND"
                         className="bg-input text-foreground border-border"
-                        {...field}
+                        value={field.value}
+                        onChange={(e) => {
+                          const value = e.target.value.replace(/\D/g, "")
+                          const formattedValue = value ? new Intl.NumberFormat().format(Number(value)) : ""
+                          field.onChange(formattedValue)
+                        }}
                       />
                     </FormControl>
                     <FormMessage />
@@ -279,8 +357,17 @@ export default function SendQuoteForm() {
                 className="border-border text-foreground hover:bg-accent w-26 h-10 shadow-gray-500 rounded-full"
                 onClick={() => setIsEditing(!isEditing)}
               >
-                <Edit2 className="h-4 w-4" />
-                Edit
+                {isEditing ? (
+                  <>
+                    <Save className="h-4 w-4" />
+                    Save
+                  </>
+                ) : (
+                  <>
+                    <Edit2 className="h-4 w-4" />
+                    Edit
+                  </>
+                )}
               </Button>
               <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
                 <DialogTrigger asChild>
@@ -382,11 +469,21 @@ export default function SendQuoteForm() {
                       <td className="border p-3">{item.no}</td>
                       <td className="border p-3">
                         {isEditing ? (
-                          <Input
-                            value={item.item}
-                            onChange={(e) => handleItemChange(index, "item", e.target.value)}
-                            className="w-full"
-                          />
+                          <div className="flex gap-2">
+                            <Input
+                              value={item.item}
+                              onChange={(e) => handleItemChange(index, "item", e.target.value)}
+                              className="w-full"
+                            />
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              className="h-10 w-10 text-destructive"
+                              onClick={() => handleDeleteItem(index)}
+                            >
+                              <Trash2 className="h-4 w-4" />
+                            </Button>
+                          </div>
                         ) : (
                           item.item
                         )}
@@ -426,15 +523,63 @@ export default function SendQuoteForm() {
                   </tr>
                 </tbody>
               </table>
+              {isEditing && (
+                <Button
+                  variant="outline"
+                  className="mt-4 border-border text-foreground hover:bg-accent"
+                  onClick={handleAddItem}
+                >
+                  <Plus className="h-4 w-4 mr-2" />
+                  Add Item
+                </Button>
+              )}
             </div>
 
             <div className="mt-8">
               <h3 className="font-semibold mb-2">Notes:</h3>
-              <ul className="list-disc list-inside">
+              <ul className="list-disc list-inside space-y-2">
                 {quoteData.notes.map((note, index) => (
-                  <li key={index}>{note}</li>
+                  <li key={index} className="flex items-center gap-2">
+                    {isEditing ? (
+                      <>
+                        <Input
+                          value={note}
+                          onChange={(e) => handleEditNote(index, e.target.value)}
+                          className="flex-1"
+                        />
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="h-8 w-8 text-destructive"
+                          onClick={() => handleDeleteNote(index)}
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </>
+                    ) : (
+                      note
+                    )}
+                  </li>
                 ))}
               </ul>
+              {isEditing && (
+                <div className="mt-4 flex flex-col gap-2">
+                  <Input
+                    value={newNote}
+                    onChange={(e) => setNewNote(e.target.value)}
+                    placeholder="Add a new note"
+                    className="flex-1"
+                  />
+                  <Button
+                    variant="outline"
+                    className="border-border text-foreground hover:bg-accent"
+                    onClick={handleAddNote}
+                  >
+                    <Plus className="h-4 w-4 mr-2" />
+                    Add Note
+                  </Button>
+                </div>
+              )}
             </div>
           </div>
         </Card>

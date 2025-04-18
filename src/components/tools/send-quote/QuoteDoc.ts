@@ -65,6 +65,9 @@ export const generateQuoteDoc = (quoteData: QuoteData, recipientName: string): s
 
     .quote-table .no-column {
       width: 8%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
 
     .quote-table .item-column {
@@ -73,10 +76,16 @@ export const generateQuoteDoc = (quoteData: QuoteData, recipientName: string): s
 
     .quote-table .mandays-column {
       width: 20%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
 
     .quote-table .cost-column {
       width: 20%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
 
     .total-row {

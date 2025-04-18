@@ -28,7 +28,10 @@ export const formSchema = z.object({
     projectDescription: z.string().min(10, "Description must be at least 10 characters"),
     platform: z.string().min(0, "Please provide platform"),
     expectedTimeline: z.string().min(1, "Please provide expected timeline"),
-    budget: z.string().regex(/^\d+(\.\d{1,2})?$/, "Please enter a valid budget"),
+    budget: z.string().min(1, "Please provide budget").refine((val) => {
+      const num = Number(val.replace(/,/g, ""))
+      return !isNaN(num) && num > 0
+    }, "Please enter a valid budget"),
 })
 
 export type QuoteFormValues = z.infer<typeof formSchema> 
