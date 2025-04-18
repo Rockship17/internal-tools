@@ -11,12 +11,11 @@ import { Edit2, Save, Upload, X } from "lucide-react"
 import { useState } from "react"
 import { GoogleGenerativeAI } from "@google/generative-ai"
 import { Select, SelectValue, SelectTrigger, SelectContent, SelectItem } from "@/components/ui/select"
-import Logo from "@/assets/icon/rockship.png"
-import Image from "next/image"
-import { generateQuoteDoc } from "./generateQuoteDoc"
-import { QuoteData, QuoteItem, formSchema, QuoteFormValues } from "./types"
-import { generatePrompt } from "./generatePrompt"
-import { cleanJsonResponse } from "./utils"
+import { generateQuoteDoc } from "./QuoteDoc"
+import { QuoteData, QuoteItem, formSchema, QuoteFormValues } from "@/types/quote"
+import { quotePrompt } from "./quotePrompt"
+import { cleanJsonResponse } from "@/utils/quote"
+import { toast } from "sonner"
 
 const genAI = new GoogleGenerativeAI(process.env.NEXT_PUBLIC_GEMINI_API_KEY || "")
 
@@ -44,7 +43,7 @@ export default function SendQuoteForm() {
       setIsLoading(true)
       const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" })
 
-      const prompt = generatePrompt(data)
+      const prompt = quotePrompt(data)
       const result = await model.generateContent(prompt)
       const response = await result.response
       const text = response.text()
@@ -59,9 +58,11 @@ export default function SendQuoteForm() {
         console.log("Raw response:", text)
         setQuoteData(null)
       }
+      toast.success("Quote generated successfully")
     } catch (error) {
       console.error("Error generating quote:", error)
       setQuoteData(null)
+      toast.error("Error generating quote")
     } finally {
       setIsLoading(false)
     }
@@ -81,9 +82,14 @@ export default function SendQuoteForm() {
           : value,
     }
 
+    const totalMandays = newQuoteItems.reduce((sum, item) => sum + (item.mandays || 0), 0)
+    const totalOneTimeCostMilVND = newQuoteItems.reduce((sum, item) => sum + (item.costMilVND || 0), 0)
+
     setQuoteData({
       ...quoteData,
       quotationItems: newQuoteItems,
+      totalMandays,
+      totalOneTimeCostMilVND,
     })
   }
 
@@ -96,7 +102,8 @@ export default function SendQuoteForm() {
       const htmlContent = generateQuoteDoc(quoteData, recipientName)
       const blob = new Blob([htmlContent], { type: "application/msword" })
       const formData = new FormData()
-      formData.append("file", blob, "quote.doc")
+      const fileName = `QUOTATION - ${form.getValues().clientName}.doc`
+      formData.append("file", blob, fileName)
       formData.append("format", "doc")
 
       const response = await fetch("https://n8n.rockship.co/webhook/send-quote", {
@@ -110,6 +117,7 @@ export default function SendQuoteForm() {
 
       setUploadStatus("success")
       const result = await response.json()
+      toast.success("Quote uploaded to Drive successfully")
       console.log("Upload successful:", result)
     } catch (error) {
       console.error("Error uploading quote:", error)
@@ -288,7 +296,11 @@ export default function SendQuoteForm() {
 
           <div className="flex items-start justify-between mb-8">
             <div>
-              <Image src={Logo} alt="Rockship" width={100} height={100} />
+              <img
+                src="https://internal-tools-rockship.s3.ap-southeast-1.amazonaws.com/rockship-logo.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=ASIAW3MEALFEHZM4E23L%2F20250418%2Fap-southeast-1%2Fs3%2Faws4_request&X-Amz-Date=20250418T035803Z&X-Amz-Expires=300&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEOT%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaDmFwLXNvdXRoZWFzdC0xIkcwRQIgHlMj8KSUS9wneosPxkUEFGD1t%2Fz1c9apw66fMitWbyMCIQDy0EHduMEwcEfQVJzWMvywQmqwZeKsw0y7k7HalCkTEir3AghtEAAaDDQ3MTExMjYzNjc0NCIMsulrHw2SLeWQZGqAKtQC3UJuNhtoRJY4nUaYQtrlleMIm%2BJforKV1UzxMTSjnQLwd42RKQsGg36Gqd5JLhGA7jnh2Q%2BMuqWWRK0K8ub0RzIRTsDRo61t2JjKPmfKiZrH8NGEivKuwPKVDhkbHBvKKG7qLropbZ7bAmC8rEld8%2FPZ5ymxha0EKcHGphK8utAf%2Bah3dEzBs1UhFZSwoctJVwyYMpmRsDd1wCUrk5mY0uXMuAcLYmfJwBMwNGJp9pg5%2B5Ml7mptG%2BHG4NHl%2BC68vyTWbhvkXdGba5%2FjkjQHvAAgqCyQC2pLlz9PBuxbAgc5VCpFcEvokDCzXYFj1IxNiBjKjHH70A9ga1Ni6kt5ZHVe%2Ffc2hfilEE7ACoUDAz9GWSZebVVD1tfEMahLJAvuV4GOPWkZxa17od%2FLZ%2BjLe8Pa6DUGvNqEnaywc6KwHPAFPOrnrZLnOs0phgqpdsebhj0JGTCJmIfABjqtAjg0p3T8v45uSYLPx5pNi930Tc86HA0aD4Hpxi9FyKxf4LGTJIEvVNQ8T5KtV7Aumpz%2FFHuRniNWGjwUt%2FIuk7VtzD0wPvLR2gygQmfcSWc87tfZknpVQjxqgoyad4tZsfMe1Fn3lBbICLfpGx9xVivuwpl4IWYVYBw59LgSm%2FqwhdzCJd7x1yaHGlmto3E42pAufZmR5F%2FBPblBmHwLM26atIVfzb3cz%2FA7r3lEr9rBPHbV6IYiocI72qbj4lJCSH5xTZQs5%2BBDk4HB2GP95KDRrMv6xlOzoUltGD%2B%2BPLaOXHBE%2FAH%2Bw6HBn086co3MilTYw0afWhBEykcvXOv5LbdL6N%2FevgUgaIHPxF3ESY566ntrk9FWx9TmTvJlwYD77f5R3%2BXT6j6SK4j768U%3D&X-Amz-Signature=9b6f639f75c0ed445738fd6326d869a91ba737a500a85b6ce3490591e0a88418&X-Amz-SignedHeaders=host&response-content-disposition=inline"
+                alt="Rockship"
+                className="w-16 h-16"
+              />
               <h1 className="text-xl font-bold mb-2">Rockship Pte. Ltd.</h1>
               <p className="text-muted-foreground">OXLEY BIZHUB, 73 UBI ROAD 1, #08-54, Postal 408733</p>
             </div>
@@ -367,13 +379,6 @@ export default function SendQuoteForm() {
                   </td>
                   <td className="border p-3">{quoteData.totalMandays}</td>
                   <td className="border p-3">{quoteData.totalOneTimeCostMilVND}</td>
-                </tr>
-                <tr>
-                  <td colSpan={2} className="border p-3">
-                    Monthly operating cost
-                  </td>
-                  <td className="border p-3"></td>
-                  <td className="border p-3">{quoteData.monthlyOperatingCostMilVND}</td>
                 </tr>
               </tbody>
             </table>
