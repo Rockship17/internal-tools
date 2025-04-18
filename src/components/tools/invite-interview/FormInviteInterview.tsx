@@ -135,13 +135,15 @@ export default function FormInviteInterview() {
                     </FormItem>
                   )}
                 />
-                <Button
-                  type="submit"
-                  className="w-full cursor-pointer bg-primary text-primary-foreground"
-                  disabled={loading}
-                >
-                  {loading ? "Sending..." : "Send Invitation"}
-                </Button>
+                <div className="pt-10 border-t border-border w-full flex justify-center">
+                  <Button
+                    type="submit"
+                    className="w-full md:w-1/3 mx-auto flex justify-center items-center h-12 px-8 cursor-pointer bg-primary text-primary-foreground font-bold rounded-full"
+                    disabled={loading}
+                  >
+                    {loading ? "Sending..." : "Send Invitation"}
+                  </Button>
+                </div>
               </form>
             </Form>
           </div>

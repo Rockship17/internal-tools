@@ -259,7 +259,7 @@ export default function FormOfferLetter() {
               <div className="pt-6 border-t border-border w-full flex justify-center">
                 <Button
                   type="submit"
-                  className="w-full md:w-auto h-12 px-8 rounded-lg bg-primary text-primary-foreground hover:bg-primary/90"
+                  className="w-full md:w-auto h-12 px-8 bg-primary text-primary-foreground hover:bg-primary/90 font-bold rounded-full"
                   disabled={loading}
                 >
                   {loading ? "Processing..." : "Generate Offer Letter"}

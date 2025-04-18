@@ -42,6 +42,12 @@
     --teal-foreground: oklch(0.985 0 0);
     --pink: oklch(0.7 0.2 330);
     --pink-foreground: oklch(0.985 0 0);
+
+    /* Dialog colors */
+    --dialog: oklch(0.98 0.01 0);
+    --dialog-foreground: oklch(0.2 0 0);
+    --dialog-border: oklch(0.9 0.02 0);
+    --dialog-overlay: oklch(0.2 0 0 / 0.5);
   }
 
   .dark {
@@ -82,6 +88,12 @@
     --gradient-1: linear-gradient(to right, oklch(0.6 0.2 270), oklch(0.6 0.2 330));
     --gradient-2: linear-gradient(to right, oklch(0.6 0.15 180), oklch(0.6 0.15 220));
     --gradient-3: linear-gradient(to right, oklch(0.6 0.2 150), oklch(0.6 0.15 180));
+
+    /* Dialog colors */
+    --dialog: oklch(0.25 0 0);
+    --dialog-foreground: oklch(0.95 0 0);
+    --dialog-border: oklch(0.35 0.02 0);
+    --dialog-overlay: oklch(0.1 0 0 / 0.7);
   }
 }
 
@@ -142,6 +154,14 @@
   background: var(--gradient-3);
 }
 
+.bg-dialog {
+  background-color: var(--dialog);
+}
+
+.bg-dialog-overlay {
+  background-color: var(--dialog-overlay);
+}
+
 /* Apply text colors */
 .text-foreground {
   color: var(--foreground);
@@ -183,9 +203,17 @@
   color: var(--pink-foreground);
 }
 
+.text-dialog-foreground {
+  color: var(--dialog-foreground);
+}
+
 /* Border colors */
 .border-border {
   border-color: var(--border);
+}
+
+.border-dialog {
+  border-color: var(--dialog-border);
 }
 
 body {

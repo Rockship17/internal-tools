@@ -7,7 +7,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
 import { useForm } from "react-hook-form"
 import { Card } from "@/components/ui/card"
-import { Edit2, Save, Upload, X } from "lucide-react"
+import { Copy, Edit2, Share } from "lucide-react"
 import { useState } from "react"
 import { GoogleGenerativeAI } from "@google/generative-ai"
 import { Select, SelectValue, SelectTrigger, SelectContent, SelectItem } from "@/components/ui/select"
@@ -16,6 +16,14 @@ import { QuoteData, QuoteItem, formSchema, QuoteFormValues } from "@/types/quote
 import { quotePrompt } from "./quotePrompt"
 import { cleanJsonResponse } from "@/utils/quote"
 import { toast } from "sonner"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
 
 const genAI = new GoogleGenerativeAI(process.env.NEXT_PUBLIC_GEMINI_API_KEY || "")
 
@@ -25,6 +33,8 @@ export default function SendQuoteForm() {
   const [isLoading, setIsLoading] = useState(false)
   const [recipientName, setRecipientName] = useState("")
   const [uploadStatus, setUploadStatus] = useState<"idle" | "loading" | "success" | "error">("idle")
+  const [docLink, setDocLink] = useState<string>("")
+  const [isDialogOpen, setIsDialogOpen] = useState(false)
 
   const form = useForm<QuoteFormValues>({
     resolver: zodResolver(formSchema),
@@ -115,10 +125,10 @@ export default function SendQuoteForm() {
         throw new Error("Upload failed")
       }
 
-      setUploadStatus("success")
       const result = await response.json()
+      setDocLink(result.link)
+      setUploadStatus("success")
       toast.success("Quote uploaded to Drive successfully")
-      console.log("Upload successful:", result)
     } catch (error) {
       console.error("Error uploading quote:", error)
       setUploadStatus("error")
@@ -250,7 +260,7 @@ export default function SendQuoteForm() {
 
             <Button
               type="submit"
-              className="w-full bg-primary text-primary-foreground hover:bg-primary/90"
+              className="w-full md:w-1/3 h-12 mx-auto flex justify-center items-center bg-primary text-primary-foreground hover:bg-primary/90 font-bold rounded-full"
               disabled={isLoading}
             >
               {isLoading ? "Generating..." : "Generate Quote"}
@@ -262,33 +272,68 @@ export default function SendQuoteForm() {
       {quoteData && (
         <Card className="p-6 mt-6 bg-card border-border flex-1">
           <div className="flex justify-between items-center mb-6">
-            <h2 className="text-xl font-semibold text-foreground">Generated Quote</h2>
-            <div className="flex gap-2">
+            <div className="flex gap-4 ml-auto">
               <Button
                 variant="outline"
                 size="icon"
-                className="border-border text-foreground hover:bg-accent"
+                className="border-border text-foreground hover:bg-accent w-26 h-10 shadow-gray-500 rounded-full"
                 onClick={() => setIsEditing(!isEditing)}
               >
                 <Edit2 className="h-4 w-4" />
+                Edit
               </Button>
-              <Button
-                variant="outline"
-                size="icon"
-                className="border-border text-foreground hover:bg-accent"
-                onClick={handleUpload}
-                disabled={uploadStatus === "loading"}
-              >
-                {uploadStatus === "loading" ? (
-                  <div className="animate-spin">...</div>
-                ) : uploadStatus === "success" ? (
-                  <Save className="h-4 w-4 text-green-500" />
-                ) : uploadStatus === "error" ? (
-                  <X className="h-4 w-4 text-red-500" />
-                ) : (
-                  <Upload className="h-4 w-4" />
-                )}
-              </Button>
+              <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+                <DialogTrigger asChild>
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    className="border-border text-foreground hover:bg-accent w-26 h-10 shadow-gray-500 rounded-full"
+                    onClick={async (e) => {
+                      e.preventDefault()
+                      setIsDialogOpen(true)
+                      if (!docLink) {
+                        await handleUpload()
+                      }
+                    }}
+                  >
+                    <Share className="h-4 w-4" />
+                    Share
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="sm:max-w-[600px] min-h-[300px] bg-dialog text-dialog-foreground border-dialog-border">
+                  <DialogHeader className="flex flex-col py-12 gap-8 px-8">
+                    <DialogTitle className="text-2xl font-bold">Share Quote URL</DialogTitle>
+                    <DialogDescription className="w-full">
+                      {uploadStatus === "loading" ? (
+                        <div className="flex items-center justify-center py-8">
+                          <div className="animate-spin text-2xl">...</div>
+                          <span className="ml-3 text-lg">Uploading document...</span>
+                        </div>
+                      ) : (
+                        <div className="flex items-center justify-between gap-3">
+                          <Input
+                            type="text"
+                            value={docLink || ""}
+                            readOnly
+                            className="w-3/4 h-14 rounded-full text-lg px-6 bg-transparent !border-1 !border-gray-500 text-foreground"
+                          />
+                          <Button
+                            variant="outline"
+                            size="icon"
+                            className="border-border text-foreground hover:bg-accent w-1/4 h-14 shadow-gray-500 rounded-full bg-primary text-primary-foreground"
+                            onClick={() => {
+                              navigator.clipboard.writeText(docLink || "")
+                              toast.success("Copied to clipboard")
+                            }}
+                          >
+                            <Copy className="h-4 w-4" /> Copy
+                          </Button>
+                        </div>
+                      )}
+                    </DialogDescription>
+                  </DialogHeader>
+                </DialogContent>
+              </Dialog>
             </div>
           </div>
 
