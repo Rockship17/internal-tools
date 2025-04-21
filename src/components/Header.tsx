@@ -9,7 +9,9 @@ export function Header() {
       <div className="flex items-center gap-4 ml-auto">
         <div className="relative">
           <Bell className="w-5 h-5 text-muted-foreground hover:text-foreground transition-colors" />
-          <Badge className="absolute -top-1 -right-1 w-4 h-4 p-0 flex items-center justify-center bg-primary text-primary-foreground">1</Badge>
+          <Badge className="absolute -top-1 -right-1 w-4 h-4 p-0 flex items-center justify-center bg-primary text-primary-foreground">
+            1
+          </Badge>
         </div>
         <ModeToggle />
         <div className="flex items-center gap-3">

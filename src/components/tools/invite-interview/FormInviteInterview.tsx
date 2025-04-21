@@ -37,7 +37,9 @@ export default function FormInviteInterview() {
       Object.keys(values).forEach((key) => {
         if (values[key as keyof FormValues]) {
           if (key === "start_day") {
-            formData.append(key, values[key].toISOString())
+            const date = new Date(values[key])
+            date.setHours(date.getHours() + 7)
+            formData.append(key, date.toISOString())
           } else {
             formData.append(key, values[key as keyof FormValues]?.toString() || "")
           }

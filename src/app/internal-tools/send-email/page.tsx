@@ -24,19 +24,19 @@ export default function SendEmail() {
               <TabsList className="w-full justify-center my-4 gap-4">
                 <TabsTrigger
                   value="invite-interview"
-                  className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground w-full h-12 text-xl font-bold"
+                  className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground w-full h-12 font-bold"
                 >
                   Invite Interview
                 </TabsTrigger>
                 <TabsTrigger
                   value="reject-interview"
-                  className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground w-full h-12 text-xl font-bold"
+                  className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground w-full h-12 font-bold"
                 >
                   Reject Interview
                 </TabsTrigger>
                 <TabsTrigger
                   value="offer-letter"
-                  className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground w-full h-12 text-xl font-bold"
+                  className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground w-full h-12 font-bold"
                 >
                   Offer Letter
                 </TabsTrigger>
