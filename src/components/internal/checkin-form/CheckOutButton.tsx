@@ -76,7 +76,15 @@ export default function CheckOutButton({ onCheckOut }: CheckOutButtonProps) {
             location: address,
           }),
         })
-        const data = await response.json()
+        let data = null
+        const text = await response.text()
+        if (text) {
+          try {
+            data = JSON.parse(text)
+          } catch (e) {
+            console.warn("Response is not valid JSON", e)
+          }
+        }
         const currentTime = new Date().toISOString()
         localStorage.setItem("checkOutTime", currentTime)
         onCheckOut(currentTime)

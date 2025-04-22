@@ -126,9 +126,17 @@ export default function AttendancePage() {
                 <Clock className="h-6 w-6 text-blue-600" />
                 <h2 className="text-lg font-semibold text-foreground">Quick Actions</h2>
               </div>
-              <div className="flex flex-col sm:flex-row items-center gap-4 justify-center">
-                <CheckInButton onCheckIn={(time) => setCheckInTime(time)} />
-                <CheckOutButton onCheckOut={(time) => setCheckOutTime(time)} />
+              <div className="flex flex-col sm:flex-row items-center gap-4 justify-center min-h-[56px]">
+                {!checkInTime && <CheckInButton onCheckIn={(time) => setCheckInTime(time)} />}
+                {checkInTime && !checkOutTime && <CheckOutButton onCheckOut={(time) => setCheckOutTime(time)} />}
+                {checkInTime && checkOutTime && (
+                  <div className="text-center w-full text-muted-foreground">
+                    <span className="inline-flex items-center gap-2">
+                      <span className="text-lg">✅</span>
+                      You have completed check-in and check-out for today.
+                    </span>
+                  </div>
+                )}
               </div>
             </Card>
 

@@ -16,29 +16,33 @@ export function RangePicker({
   showTime = false,
   dateRange,
   onRangeChange,
+  disabled = false,
 }: {
   className?: string
   showTime?: boolean
   dateRange: DateRange | undefined
   onRangeChange: (dateRange: DateRange) => void
+  disabled?: boolean
 }) {
+  // Always sync state with prop
   const [dateRangeState, setDateRangeState] = React.useState<DateRange | undefined>(dateRange)
+  React.useEffect(() => {
+    setDateRangeState(dateRange)
+  }, [dateRange])
 
   const handleFromTimeChange = (date: Date | undefined) => {
     if (date && dateRangeState) {
-      setDateRangeState({
-        ...dateRangeState,
-        from: date,
-      })
+      const newRange = { ...dateRangeState, from: date }
+      setDateRangeState(newRange)
+      onRangeChange(newRange)
     }
   }
 
   const handleToTimeChange = (date: Date | undefined) => {
     if (date && dateRangeState) {
-      setDateRangeState({
-        ...dateRangeState,
-        to: date,
-      })
+      const newRange = { ...dateRangeState, to: date }
+      setDateRangeState(newRange)
+      onRangeChange(newRange)
     }
   }
 
@@ -50,6 +54,7 @@ export function RangePicker({
             id="date"
             variant={"outline"}
             className={cn("justify-start text-left font-normal", !dateRange && "text-muted-foreground")}
+            disabled={disabled}
           >
             <CalendarIcon className="mr-2 h-4 w-4" />
             {dateRange?.from ? (
@@ -66,7 +71,7 @@ export function RangePicker({
             )}
           </Button>
         </PopoverTrigger>
-        <PopoverContent className="w-auto p-0 bg-white text-black" align="start">
+        <PopoverContent className="w-auto p-0 bg-card text-foreground" align="start">
           <Calendar
             initialFocus
             mode="range"
@@ -74,19 +79,21 @@ export function RangePicker({
             selected={dateRangeState}
             onSelect={(range) => {
               setDateRangeState(range)
-              if (range?.from && range?.to) onRangeChange(range)
+              // Always call onRangeChange for parent sync, even if only from is selected
+              if (range) onRangeChange(range)
             }}
             numberOfMonths={2}
+            disabled={disabled}
           />
           {showTime && (
-            <div className="border-t p-3 space-y-3">
+            <div className="border-t p-3 space-y-3 grid grid-cols-2 bg-card text-foreground">
               <div>
                 <div className="text-sm font-medium mb-2">Start Time</div>
-                <TimePicker date={dateRangeState?.from} setDate={handleFromTimeChange} />
+                <TimePicker date={dateRangeState?.from} setDate={handleFromTimeChange} disabled={disabled} />
               </div>
               <div>
                 <div className="text-sm font-medium mb-2">End Time</div>
-                <TimePicker date={dateRangeState?.to} setDate={handleToTimeChange} />
+                <TimePicker date={dateRangeState?.to} setDate={handleToTimeChange} disabled={disabled} />
               </div>
             </div>
           )}

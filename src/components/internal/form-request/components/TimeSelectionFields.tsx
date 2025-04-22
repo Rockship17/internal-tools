@@ -33,13 +33,14 @@ export function TimeSelectionFields({
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Ngày *</FormLabel>
-                <FormControl>
+                <FormControl className="bg-card text-foreground">
                   <DatePicker
                     date={field.value}
                     onSelect={(date: any) => {
                       field.onChange(date)
                       calculateDuration("single", date)
                     }}
+                    className="bg-card text-foreground"
                   />
                 </FormControl>
                 <FormMessage />
@@ -84,7 +85,7 @@ export function TimeSelectionFields({
           render={({ field }) => (
             <FormItem>
               <FormLabel>{showTimePicker ? "Thời gian (Giờ) *" : "Thời gian (Ngày) *"}</FormLabel>
-              <FormControl>
+              <FormControl className="bg-card text-foreground">
                 <RangePicker
                   showTime={showTimePicker}
                   dateRange={field.value}

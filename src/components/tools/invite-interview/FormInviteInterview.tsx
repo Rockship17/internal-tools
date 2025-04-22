@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { DatePicker } from "antd"
+import { DatePicker } from "@/components/ui/date-picker"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { toast } from "sonner"
@@ -7,7 +7,6 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { useForm } from "react-hook-form"
 import * as z from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
-import dayjs from "dayjs"
 import { Calendar, User } from "lucide-react"
 
 const formSchema = z.object({
@@ -127,10 +126,9 @@ export default function FormInviteInterview() {
                       <FormControl>
                         <DatePicker
                           className="rounded-lg bg-input text-foreground w-full"
-                          showTime={{ format: "HH:mm" }}
-                          format="YYYY-MM-DD HH:mm"
-                          onChange={(date) => field.onChange(date?.toDate())}
-                          value={field.value ? dayjs(field.value) : null}
+                          showTime
+                          date={field.value}
+                          onSelect={(date) => field.onChange(date)}
                         />
                       </FormControl>
                       <FormMessage />
