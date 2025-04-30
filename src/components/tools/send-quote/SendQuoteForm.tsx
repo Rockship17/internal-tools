@@ -52,7 +52,6 @@ export default function SendQuoteForm() {
   const onSubmit = async (data: QuoteFormValues) => {
     try {
       setIsLoading(true)
-      // Reset upload status and document link when generating new quote
       setUploadStatus("idle")
       setDocLink("")
 
@@ -115,15 +114,17 @@ export default function SendQuoteForm() {
       setUploadStatus("loading")
 
       const htmlContent = generateQuoteDoc(quoteData, recipientName)
-      const blob = new Blob([htmlContent], { type: "application/msword" })
-      const formData = new FormData()
-      const fileName = `QUOTATION - ${form.getValues().clientName}.doc`
-      formData.append("file", blob, fileName)
-      formData.append("format", "doc")
+      const blob = await htmlContent
+      const fileName = `QUOTATION - ${form.getValues().clientName}.docx`
 
       const response = await fetch("https://n8n.rockship.co/webhook/send-quote", {
         method: "POST",
-        body: formData,
+        headers: {
+          "Content-Type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+          "Content-Disposition": `attachment; filename="${fileName}"`,
+          "X-File-Format": "docx",
+        },
+        body: blob,
       })
 
       if (!response.ok) {
@@ -164,7 +165,6 @@ export default function SendQuoteForm() {
     if (!quoteData) return
 
     const newQuoteItems = quoteData.quotationItems.filter((_, i) => i !== index)
-    // Renumber the items
     newQuoteItems.forEach((item, i) => {
       item.no = i + 1
     })
@@ -392,10 +392,10 @@ export default function SendQuoteForm() {
                     <DialogTitle className="text-2xl font-bold">Share Quote URL</DialogTitle>
                     <DialogDescription className="w-full">
                       {uploadStatus === "loading" ? (
-                        <div className="flex items-center justify-center py-8">
-                          <div className="animate-spin text-2xl">...</div>
+                        <span className="flex items-center justify-center py-8">
+                          <span className="animate-spin text-2xl">...</span>
                           <span className="ml-3 text-lg">Uploading document...</span>
-                        </div>
+                        </span>
                       ) : (
                         <div className="flex items-center justify-between gap-3">
                           <Input
@@ -433,7 +433,7 @@ export default function SendQuoteForm() {
                   className="w-16 h-16"
                 />
                 <h1 className="text-xl font-bold mb-2">Rockship Pte. Ltd.</h1>
-                <p className="text-muted-foreground">OXLEY BIZHUB, 73 UBI ROAD 1, #08-54, Postal 408733</p>
+                <span className="text-muted-foreground">OXLEY BIZHUB, 73 UBI ROAD 1, #08-54, Postal 408733</span>
               </div>
               <div>
                 <h2 className="text-2xl font-bold uppercase underline">QUOTATION</h2>
@@ -449,7 +449,7 @@ export default function SendQuoteForm() {
                   placeholder="Recipient Name"
                 />
               ) : (
-                <p className="font-semibold">To: {recipientName}</p>
+                <span className="font-semibold">To: {recipientName}</span>
               )}
             </div>
 
