@@ -37,7 +37,7 @@ function base64ToUint8Array(base64: string): Uint8Array {
 export async function generateQuoteDoc(quoteData: QuoteData, recipientName: string): Promise<Blob> {
   const { recipient, company, quotationItems = [], totalMandays = 0, totalOneTimeCostMilVND = 0, notes = [] } = quoteData || {};
   // Extract monthly operating cost if present or default to 3
-  const monthlyOperatingCostMilVND = quoteData?.monthlyOperatingCostMilVND || 3;
+  // const monthlyOperatingCostMilVND = quoteData?.monthlyOperatingCostMilVND || 3;
 
   // Header with logo on left and QUOTATION on right
   const header = new Paragraph({
