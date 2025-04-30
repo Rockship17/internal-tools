@@ -45,6 +45,7 @@ export async function generateQuoteDoc(quoteData: QuoteData, recipientName: stri
       new ImageRun({
         data: base64ToUint8Array(imageBase64Data),
         transformation: { width: 120, height: 120 },
+        type: "png",
       }),
     ]
   });
@@ -287,12 +288,9 @@ export async function generateQuoteDoc(quoteData: QuoteData, recipientName: stri
     ]
   });
 
-  // Create Blob from document
   const blob = await Packer.toBlob(doc);
 
-  // Save file locally and return Blob for upload
   saveAs(blob, `bao-gia-${recipient || 'du-an'}.docx`);
 
-  // Return blob for upload
   return blob;
 }
