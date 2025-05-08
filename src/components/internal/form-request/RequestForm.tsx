@@ -95,8 +95,8 @@ export function RequestForm() {
     setIsSubmitting(true)
     try {
       const id = localStorage.getItem("id") || ""
-      const userName = localStorage.getItem("fullName") || ""
       const fullName = localStorage.getItem("userName") || ""
+      const userName = localStorage.getItem("fullName") || ""
 
       const formData: Record<string, any> = {
         id,
