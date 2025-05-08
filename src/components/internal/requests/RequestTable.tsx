@@ -34,9 +34,10 @@ type Request = {
 
 interface RequestTableProps {
   type?: "leave" | "remote"
+  status?: string
 }
 
-export function RequestTable({ type }: RequestTableProps) {
+export function RequestTable({ type, status }: RequestTableProps) {
   const [requests, setRequests] = useState<Request[]>([])
   const [loading, setLoading] = useState(false)
   const [confirmDialog, setConfirmDialog] = useState<{ isOpen: boolean; action: string; request: Request | null }>({
@@ -45,9 +46,21 @@ export function RequestTable({ type }: RequestTableProps) {
     request: null,
   })
 
-  const filteredRequests = type
-    ? requests.filter((request) => request.request_for.toLowerCase().includes(type) && request.status === "Pending")
-    : requests.filter((request) => request.status === "Pending")
+  const filteredRequests = requests.filter((request) => {
+    // Filter by type if specified
+    const typeMatches = type
+      ? type === "leave"
+        ? request.request_for.toLowerCase().includes("time/day off")
+        : type === "remote"
+        ? request.request_for.toLowerCase().includes("remote work")
+        : true
+      : true
+
+    // Filter by status, default to Pending if not specified
+    const statusMatches = status ? request.status === status : request.status === "Pending"
+
+    return typeMatches && statusMatches
+  })
 
   const handleUpdateStatus = async (status: string, userId: number, userName: string, id: string) => {
     try {
@@ -128,6 +141,7 @@ export function RequestTable({ type }: RequestTableProps) {
           <TableHeader className="bg-primary">
             <TableRow className="hover:bg-muted-foreground/50">
               <TableHead className="text-primary-foreground">Employee</TableHead>
+              <TableHead className="text-primary-foreground">Request For</TableHead>
               <TableHead className="text-primary-foreground">Request Type</TableHead>
               <TableHead className="text-primary-foreground">Period</TableHead>
               <TableHead className="text-primary-foreground">Reason</TableHead>
@@ -160,12 +174,13 @@ export function RequestTable({ type }: RequestTableProps) {
                         ? "bg-blue-100 text-blue-700 hover:bg-blue-100"
                         : request.request_for.includes("Delayed arrival")
                         ? "bg-orange-100 text-orange-700 hover:bg-orange-100"
-                        : "bg-red-100 text-red-700 hover:bg-red-100" // Early Dismissal
+                        : "bg-red-100 text-red-700 hover:bg-red-100"
                     )}
                   >
                     {request.request_for}
                   </Badge>
                 </TableCell>
+                <TableCell>{request.type}</TableCell>
                 <TableCell>
                   <p className="whitespace-nowrap">From: {request.start_date}</p>
                   <p className="whitespace-nowrap">To: {request.end_date}</p>

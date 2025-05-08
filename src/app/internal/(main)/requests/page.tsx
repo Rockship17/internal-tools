@@ -1,10 +1,15 @@
+"use client"
+
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { RequestTable } from "@/components/internal/requests/RequestTable"
 import { Search, FileText } from "lucide-react"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { useState } from "react"
 
 export default function RequestsPage() {
+  const [statusFilter, setStatusFilter] = useState("Pending")
+
   return (
     <div className="space-y-6">
       <div className="bg-card rounded-lg border border-border p-0 lg:p-6">
@@ -26,19 +31,19 @@ export default function RequestsPage() {
               <TabsList className="w-full lg:w-auto bg-card p-1 rounded-lg border border-border">
                 <TabsTrigger
                   value="all"
-                  className="flex-1 lg:flex-none data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm"
+                  className="flex-1 lg:flex-none data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm cursor-pointer"
                 >
                   All
                 </TabsTrigger>
                 <TabsTrigger
                   value="leave"
-                  className="flex-1 lg:flex-none data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm"
+                  className="flex-1 lg:flex-none data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm cursor-pointer"
                 >
-                  Leave
+                  Time/Day Off
                 </TabsTrigger>
                 <TabsTrigger
                   value="remote"
-                  className="flex-1 lg:flex-none data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm"
+                  className="flex-1 lg:flex-none data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm cursor-pointer"
                 >
                   Remote Work
                 </TabsTrigger>
@@ -52,28 +57,27 @@ export default function RequestsPage() {
                     className="pl-9 w-full bg-input text-foreground border-border"
                   />
                 </div>
-                <Select defaultValue="all">
+                <Select defaultValue="Pending" onValueChange={(value) => setStatusFilter(value)}>
                   <SelectTrigger className="w-full lg:w-[180px] bg-input text-foreground border-border">
                     <SelectValue placeholder="All statuses" className="text-foreground" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="all">All statuses</SelectItem>
-                    <SelectItem value="pending">Pending</SelectItem>
-                    <SelectItem value="approved">Approved</SelectItem>
-                    <SelectItem value="rejected">Rejected</SelectItem>
+                    <SelectItem value="Pending">Pending</SelectItem>
+                    <SelectItem value="Approve">Approved</SelectItem>
+                    <SelectItem value="Reject">Rejected</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
             </div>
 
             <TabsContent value="all" className="mt-6 bg-card">
-              <RequestTable />
+              <RequestTable status={statusFilter} />
             </TabsContent>
             <TabsContent value="leave" className="mt-6 bg-card">
-              <RequestTable type="leave" />
+              <RequestTable type="leave" status={statusFilter} />
             </TabsContent>
             <TabsContent value="remote" className="mt-6 bg-card">
-              <RequestTable type="remote" />
+              <RequestTable type="remote" status={statusFilter} />
             </TabsContent>
           </Tabs>
         </div>
