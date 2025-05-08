@@ -184,7 +184,7 @@ export function RequestForm() {
         }
       }
 
-      const response = await fetch("https://n8n.rockship.co/webhook-test/a5abc709-fe3f-4bbc-b0e4-fc78af64f23e", {
+      const response = await fetch("https://n8n.rockship.co/webhook/a5abc709-fe3f-4bbc-b0e4-fc78af64f23e", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
