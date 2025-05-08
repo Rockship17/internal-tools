@@ -49,8 +49,10 @@ export default function Login() {
       if (result.status_code === 200) {
         console.log("User Name:", result.data[0].userName)
         console.log("Full Name:", result.data[0].fullName)
+        console.log("ID:", result.data[0].userId)
         localStorage.setItem("userName", result.data[0].userName)
         localStorage.setItem("fullName", result.data[0].fullName)
+        localStorage.setItem("id", result.data[0].userId)
         router.push("/internal")
       } else {
         throw new Error(result.message || "Đăng nhập thất bại")
@@ -84,7 +86,11 @@ export default function Login() {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Input className="w-full px-4 py-2 rounded-lg bg-input text-foreground" placeholder="Username" {...field} />
+                      <Input
+                        className="w-full px-4 py-2 rounded-lg bg-input text-foreground"
+                        placeholder="Username"
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage className="text-sm text-destructive" />
                   </FormItem>
@@ -132,7 +138,11 @@ export default function Login() {
                 </Link>
               </div>
 
-              <Button type="submit" className="w-full py-3 px-4 rounded-full h-12 bg-primary text-primary-foreground hover:bg-primary/90" disabled={loading}>
+              <Button
+                type="submit"
+                className="w-full py-3 px-4 rounded-full h-12 bg-primary text-primary-foreground hover:bg-primary/90"
+                disabled={loading}
+              >
                 {loading ? "Signing in..." : "Sign In"}
               </Button>
             </form>

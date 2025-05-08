@@ -73,6 +73,7 @@ export default function CheckOutButton({ onCheckOut }: CheckOutButtonProps) {
             fullName: localStorage.getItem("userName"),
             check_out: new Date().toISOString(),
             date: new Date().toISOString(),
+            userId: localStorage.getItem("id"),
             location: address,
           }),
         })

@@ -74,6 +74,7 @@ export default function CheckInButton({ onCheckIn }: CheckInButtonProps) {
             check_in: new Date().toISOString(),
             date: new Date().toISOString(),
             location: address,
+            userId: localStorage.getItem("id"),
           }),
         })
         let data = null
