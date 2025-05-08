@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Bell, LogOut, Menu, ChevronDown } from "lucide-react"
+import { Bell, LogOut, ChevronDown } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { ModeToggle } from "@/components/ui/dark-mode-button"
 import { Button } from "./ui/button"
@@ -15,11 +15,9 @@ import {
 } from "./ui/dropdown-menu"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
-import { cn } from "@/lib/utils"
 
 export function Header() {
   const [userName, setUserName] = useState<string>("")
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const router = useRouter()
 
   useEffect(() => {
