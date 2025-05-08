@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { useForm } from "react-hook-form"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
@@ -14,6 +14,7 @@ import { RockshipBlack } from "@/assets/icon/RockshipBlack"
 export default function Login() {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
+  const [isInitialized, setIsInitialized] = useState(false)
 
   const form = useForm({
     defaultValues: {
@@ -22,6 +23,17 @@ export default function Login() {
       remember: true,
     },
   })
+
+  useEffect(() => {
+    if (typeof window !== "undefined" && localStorage.getItem("id")) {
+      router.push("/internal")
+    }
+    setIsInitialized(true)
+  }, [router])
+
+  if (!isInitialized) {
+    return null
+  }
 
   const handleSubmit = async (values: any) => {
     setLoading(true)
