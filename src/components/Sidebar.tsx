@@ -46,6 +46,7 @@ export function Sidebar() {
   const handleLogout = () => {
     localStorage.removeItem("userName")
     localStorage.removeItem("fullName")
+    localStorage.removeItem("id")
     router.push("/internal/login")
   }
 
@@ -54,7 +55,9 @@ export function Sidebar() {
       {/* Desktop Logo */}
       <div className="hidden lg:block p-6 border-b border-border">
         <Link href="/internal" className="flex items-center gap-2 font-semibold text-xl text-foreground">
-          <span className="w-8 h-8 bg-primary text-primary-foreground rounded-lg flex items-center justify-center">AC</span>
+          <span className="w-8 h-8 bg-primary text-primary-foreground rounded-lg flex items-center justify-center">
+            AC
+          </span>
           Admin Center
         </Link>
       </div>

@@ -21,7 +21,7 @@ export default function RequestsPage() {
               </div>
               <h1 className="text-xl lg:text-2xl font-semibold text-foreground">Request Management</h1>
             </div>
-            <p className="text-muted-foreground">Manage and approve leave and remote work requests</p>
+            <p className="text-muted-foreground">Manage and approve leave and remote work requests.</p>
           </div>
         </div>
 
