@@ -34,7 +34,6 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-50 h-16 px-4 lg:px-6 border-b border-border bg-card text-foreground flex items-center justify-between">
-      {/* Mobile Logo */}
       <div className="lg:hidden flex items-center">
         <Link href="/internal" className="flex items-center gap-2 font-semibold text-xl text-foreground">
           <span className="w-8 h-8 bg-primary text-primary-foreground rounded-lg flex items-center justify-center text-sm font-bold">
@@ -43,13 +42,7 @@ export function Header() {
         </Link>
       </div>
 
-      {/* Desktop Brand Name */}
-      <div className="hidden lg:flex items-center">
-        <h1 className="text-xl font-semibold">Rockship Admin</h1>
-      </div>
-
-      <div className="flex items-center gap-4">
-        {/* Notification Bell */}
+      <div className="flex items-center gap-4 ml-auto">
         <div className="relative">
           <Button variant="ghost" size="icon" className="rounded-full">
             <Bell className="w-5 h-5 text-muted-foreground hover:text-foreground transition-colors" />
@@ -59,10 +52,8 @@ export function Header() {
           </Button>
         </div>
 
-        {/* Dark Mode Toggle */}
         <ModeToggle />
 
-        {/* User Profile Dropdown */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button
@@ -75,7 +66,7 @@ export function Header() {
               </Avatar>
               <div className="hidden lg:block flex-col text-left">
                 <p className="text-sm font-medium text-foreground">{userName}</p>
-                <p className="text-xs text-muted-foreground">Staff</p>
+                {/* <p className="text-xs text-muted-foreground">Staff</p> */}
               </div>
               <ChevronDown className="hidden lg:block w-4 h-4 text-muted-foreground" />
             </Button>
@@ -83,14 +74,9 @@ export function Header() {
           <DropdownMenuContent align="end" className="w-56 bg-card">
             <div className="lg:hidden px-2 py-1.5">
               <p className="text-sm font-medium">{userName}</p>
-              <p className="text-xs text-muted-foreground">Staff</p>
+              {/* <p className="text-xs text-muted-foreground">Staff</p> */}
             </div>
             <DropdownMenuSeparator className="lg:hidden" />
-            {/* <DropdownMenuItem className="cursor-default focus:bg-background">
-              <Link href="/internal/profile" className="flex items-center w-full hover:text-foreground">
-                Profile Settings
-              </Link>
-            </DropdownMenuItem> */}
             <DropdownMenuSeparator />
             <DropdownMenuItem
               className="cursor-pointer text-destructive focus:text-destructive focus:bg-destructive/10"

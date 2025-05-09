@@ -84,6 +84,7 @@ export function RangePicker({
             }}
             numberOfMonths={2}
             disabled={disabled}
+            fromDate={new Date()}
           />
           {showTime && (
             <div className="border-t p-3 space-y-3 grid grid-cols-2 bg-card text-foreground">

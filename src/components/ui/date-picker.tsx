@@ -55,6 +55,7 @@ export function DatePicker({
             }}
             initialFocus
             disabled={disabled}
+            fromDate={new Date()}
           />
           {showTime && (
             <div className="p-3 border-t">

@@ -52,7 +52,6 @@ export function Sidebar() {
 
   return (
     <div className="lg:w-64 bg-card lg:border-r border-border flex flex-col h-full">
-      {/* Desktop Logo */}
       <div className="hidden lg:block p-6 border-b border-border">
         <Link href="/internal" className="flex items-center gap-2 font-semibold text-xl text-foreground">
           <span className="w-8 h-8 bg-primary text-primary-foreground rounded-lg flex items-center justify-center">
@@ -62,7 +61,6 @@ export function Sidebar() {
         </Link>
       </div>
 
-      {/* Mobile Bottom Navigation */}
       <div className="lg:hidden fixed bottom-0 left-0 right-0 border-t border-border bg-card z-50">
         <nav className="flex justify-around py-2 px-4">
           {menuItems.map((item) => {
@@ -84,7 +82,6 @@ export function Sidebar() {
         </nav>
       </div>
 
-      {/* Desktop Sidebar */}
       <nav className="hidden lg:flex flex-col flex-1 p-4">
         <ul className="space-y-1">
           {menuItems.map((item) => {
