@@ -1,15 +1,24 @@
 'use client';
 
-import { useMemo, useRef, useState } from 'react';
+import { useMemo } from 'react';
 
 import { CustomTask } from './CustomGanttChart';
 import TaskBar from './TaskBar';
 
 interface TaskBarGridProps {
   data: CustomTask[];
+  handleUpdateTasks: (taskId: string, newData: Partial<CustomTask>) => void;
 }
 
-export default function TaskBarGrid({ data }: TaskBarGridProps) {
+// Before all, I want to note: I'm creating a task bar grid with "full 7 days" of a week.
+// It means, the first item of allDays constant is Monday, index of it is 0, x-position is 0.
+// And I'm using week as Monday (index 0), Tuesday (index 1), ..., Saturday (index 5), Sunday (index 6)
+// If you don't follow this rule, it maybe cause a bug. If you want to change rule, make sure to fix all bugs.
+
+export default function TaskBarGrid({
+  data,
+  handleUpdateTasks,
+}: TaskBarGridProps) {
   const startDays = useMemo(() => data.map((task) => task.start), [data]);
   const endDays = useMemo(() => data.map((task) => task.end), [data]);
 
@@ -90,6 +99,22 @@ export default function TaskBarGrid({ data }: TaskBarGridProps) {
               ))}
             </g>
 
+            <g>
+              {Array.from({ length: allDays.length + 1 }).map(
+                (_, index) =>
+                  ((index + 2) % 7 === 0 || (index + 1) % 7 === 0) && (
+                    <rect
+                      key={index}
+                      x={index * 40}
+                      y={0}
+                      width={40}
+                      height={data.length * 40}
+                      fill='#f8f9fa'
+                    ></rect>
+                  )
+              )}
+            </g>
+
             <g className='rowLines'>
               <line
                 x='0'
@@ -135,64 +160,8 @@ export default function TaskBarGrid({ data }: TaskBarGridProps) {
                 task={task}
                 index={index}
                 dayIndex={getDayIndex(task.start)}
+                handleUpdateTasks={handleUpdateTasks}
               />
-              // <g
-              //   key={task.id}
-              //   onDoubleClick={() => console.log(444)}
-              //   onMouseDown={handleMouseDown}
-              //   transform={`translate(${position.x}, ${position.y})`}
-              // >
-              //   <g className='_KxSXS' tabIndex={0}>
-              //     <g>
-              //       <rect
-              //         x={getDayIndex(task.start) * 40}
-              //         width={task.duration * 40}
-              //         y={index * 40 + 8}
-              //         height='24'
-              //         ry='3'
-              //         rx='3'
-              //         fill='#0080ff'
-              //         className='_31ERP'
-              //       ></rect>
-
-              //       {/* It seems that this is a triangular to change progress, please don't remove */}
-              //       {/* <rect
-              //       x='0'
-              //       width='0'
-              //       y='10'
-              //       height='30'
-              //       ry='3'
-              //       rx='3'
-              //       fill='#8282f5'
-              //     ></rect> */}
-              //     </g>
-              //     <g className='handleGroup'>
-              //       <g>
-              //         <rect
-              //           x={getDayIndex(task.start) * 40 + 1}
-              //           y={index * 40 + 9}
-              //           width='8'
-              //           height='22'
-              //           className='_3w_5u'
-              //           ry='3'
-              //           rx='3'
-              //           onMouseDown={(e) => console.log(e.clientX, e.clientY)}
-              //           // onMouseMove={(e) => console.log(e.clientX, e.clientY)}
-              //           onMouseUp={(e) => console.log(e.clientX, e.clientY)}
-              //         ></rect>
-              //         <rect
-              //           x={(getDayIndex(task.start) + task.duration) * 40 - 9}
-              //           y={index * 40 + 9}
-              //           width='8'
-              //           height='22'
-              //           className='_3w_5u'
-              //           ry='3'
-              //           rx='3'
-              //         ></rect>
-              //       </g>
-              //     </g>
-              //   </g>
-              // </g>
             ))}
           </g>
         </g>

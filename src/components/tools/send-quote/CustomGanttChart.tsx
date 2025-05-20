@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import CalendarBar from './CalendarBar';
 import TaskBarGrid from './TaskBarGrid';
 
@@ -58,6 +59,21 @@ export default function CustomGanttChart() {
     },
   ];
 
+  const [tasks, setTasks] = useState<CustomTask[]>(data);
+
+  const handleUpdateTasks = (taskId: string, newData: Partial<CustomTask>) => {
+    const updatedTasks = tasks.map((task) => {
+      if (task.id === taskId) {
+        return {
+          ...task,
+          ...newData,
+        };
+      }
+      return task;
+    });
+    setTasks(updatedTasks);
+  };
+
   return (
     <div className='flex mt-4'>
       {/* Task lisk */}
@@ -84,7 +100,7 @@ export default function CustomGanttChart() {
 
         <div>
           <div className='!border !border-r-0 !border-t-0 !border-solid !border-[#e6e4e4] table'>
-            {data.map((item) => (
+            {tasks.map((item) => (
               <div key={item.id} className='table-row h-10'>
                 <div
                   title={item.name}
@@ -109,8 +125,8 @@ export default function CustomGanttChart() {
 
       {/* Task bars grid */}
       <div className='overflow-auto'>
-        <CalendarBar data={data} />
-        <TaskBarGrid data={data} />
+        <CalendarBar data={tasks} />
+        <TaskBarGrid data={tasks} handleUpdateTasks={handleUpdateTasks} />
       </div>
     </div>
   );

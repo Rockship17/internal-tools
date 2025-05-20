@@ -8,9 +8,15 @@ interface TaskBarProps {
   task: CustomTask;
   index: number;
   dayIndex: number;
+  handleUpdateTasks: (taskId: string, newData: Partial<CustomTask>) => void;
 }
 
-export default function TaskBar({ task, index, dayIndex }: TaskBarProps) {
+export default function TaskBar({
+  task,
+  index,
+  dayIndex,
+  handleUpdateTasks,
+}: TaskBarProps) {
   // Start: Moving task bar
   const [positionX, setPositionX] = useState(0);
   const dragStart = useRef<number | null>(null);
@@ -20,8 +26,34 @@ export default function TaskBar({ task, index, dayIndex }: TaskBarProps) {
   const [rightResizeX, setRightResizeX] = useState(0);
   const rightDragStart = useRef<number | null>(null);
 
+  useEffect(() => {
+    setPositionX(0);
+    setLeftResizeX(0);
+    setRightResizeX(0);
+  }, [task]);
+
   const setPositionAfterMouseUp = (posX: number) => {
     setPositionX(Math.floor(posX / 40) * 40);
+
+    const diff = Math.floor(posX / 40);
+    const newStartDate = new Date(task.start);
+    newStartDate.setDate(newStartDate.getDate() + diff);
+    const newEndDate = new Date(task.end);
+    newEndDate.setDate(newEndDate.getDate() + diff);
+
+    // If newStartDate is Saturday, plus 2 to be Monday. If Sunday, plus 1 to be Monday
+    if (newStartDate.getDay() === 6) {
+      newStartDate.setDate(newStartDate.getDate() + 2);
+      newEndDate.setDate(newEndDate.getDate() + 2);
+    } else if (newStartDate.getDay() === 0) {
+      newStartDate.setDate(newStartDate.getDate() + 1);
+      newEndDate.setDate(newEndDate.getDate() + 1);
+    }
+
+    handleUpdateTasks(task.id, {
+      start: newStartDate,
+      end: newEndDate,
+    });
   };
 
   const handleMouseDown = (e: React.MouseEvent) => {
@@ -46,6 +78,25 @@ export default function TaskBar({ task, index, dayIndex }: TaskBarProps) {
   // Start: Moving left resize element to resize task bar
   const setPositionAfterMouseUpLeft = (posX: number) => {
     setLeftResizeX(Math.floor(posX / 40) * 40);
+
+    let diff = Math.floor(posX / 40);
+    const newStartDate = new Date(task.start);
+    newStartDate.setDate(newStartDate.getDate() + diff);
+
+    // If newStartDate is Saturday, plus 2 to be Monday, plus 2 into diff because we plus 2 into newStartDate
+    // Why plus 2 into diff but not subtract? Try some examples :v If Sunday, change 2 to 1
+    if (newStartDate.getDay() === 6) {
+      newStartDate.setDate(newStartDate.getDate() + 2);
+      diff = diff + 2;
+    } else if (newStartDate.getDay() === 0) {
+      newStartDate.setDate(newStartDate.getDate() + 1);
+      diff = diff + 1;
+    }
+
+    handleUpdateTasks(task.id, {
+      start: newStartDate,
+      duration: task.duration - diff,
+    });
   };
 
   const handleMouseDownLeft = (e: React.MouseEvent) => {
@@ -79,6 +130,25 @@ export default function TaskBar({ task, index, dayIndex }: TaskBarProps) {
   // Start: Moving right resize element to resize task bar
   const setPositionAfterMouseUpRight = (posX: number) => {
     setRightResizeX(Math.ceil(posX / 40) * 40);
+
+    let diff = Math.ceil(posX / 40);
+    const newEndDate = new Date(task.end);
+    newEndDate.setDate(newEndDate.getDate() + diff);
+
+    // If newEndDate is Saturday, subtract 1 to be Friday, and subtract 2 to be Friday if Sunday.
+    // Why subtract 1 or 2 into diff but not plus? Try some examples again :v
+    if (newEndDate.getDay() === 6) {
+      newEndDate.setDate(newEndDate.getDate() - 1);
+      diff = diff - 1;
+    } else if (newEndDate.getDay() === 0) {
+      newEndDate.setDate(newEndDate.getDate() - 2);
+      diff = diff - 2;
+    }
+
+    handleUpdateTasks(task.id, {
+      end: newEndDate,
+      duration: task.duration + diff,
+    });
   };
 
   const handleMouseDownRight = (e: React.MouseEvent) => {
