@@ -43,6 +43,7 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import GanttChart from './GanttChart';
+import CustomGanttChart from './CustomGanttChart';
 
 const genAI = new GoogleGenerativeAI(
   process.env.NEXT_PUBLIC_GEMINI_API_KEY || ''
@@ -683,6 +684,8 @@ export default function SendQuoteForm() {
         quotationItems={quoteData?.quotationItems || []}
         totalMandays={quoteData?.totalMandays || 0}
       />
+
+      <CustomGanttChart />
     </div>
   );
 }
