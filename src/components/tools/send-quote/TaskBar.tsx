@@ -9,6 +9,7 @@ interface TaskBarProps {
   index: number;
   dayIndex: number;
   handleUpdateTasks: (taskId: string, newData: Partial<CustomTask>) => void;
+  onStartEditingTask: (task: CustomTask) => void;
 }
 
 export default function TaskBar({
@@ -16,6 +17,7 @@ export default function TaskBar({
   index,
   dayIndex,
   handleUpdateTasks,
+  onStartEditingTask,
 }: TaskBarProps) {
   // Start: Moving task bar
   const [positionX, setPositionX] = useState(0);
@@ -181,7 +183,7 @@ export default function TaskBar({
 
   return (
     <g
-      onDoubleClick={() => console.log(444)}
+      onDoubleClick={() => onStartEditingTask(task)}
       onMouseDown={handleMouseDown}
       transform={`translate(${positionX + leftResizeX}, 0)`} // use transform to move the task bar
     >

@@ -8,16 +8,18 @@ import TaskBar from './TaskBar';
 interface TaskBarGridProps {
   data: CustomTask[];
   handleUpdateTasks: (taskId: string, newData: Partial<CustomTask>) => void;
+  onStartEditingTask: (task: CustomTask) => void;
 }
 
 // Before all, I want to note: I'm creating a task bar grid with "full 7 days" of a week.
-// It means, the first item of allDays constant is Monday, index of it is 0, x-position is 0.
-// And I'm using week as Monday (index 0), Tuesday (index 1), ..., Saturday (index 5), Sunday (index 6)
+// It means, the first item of allDays constant is Sunday, index of it is 0, x-position is 0.
+// And I'm using week as Sunday (index 0), Monday (index 1), ..., Friday (index 5), Saturday (index 6) (as same as javascript rule)
 // If you don't follow this rule, it maybe cause a bug. If you want to change rule, make sure to fix all bugs.
 
 export default function TaskBarGrid({
   data,
   handleUpdateTasks,
+  onStartEditingTask,
 }: TaskBarGridProps) {
   const startDays = useMemo(() => data.map((task) => task.start), [data]);
   const endDays = useMemo(() => data.map((task) => task.end), [data]);
@@ -43,12 +45,11 @@ export default function TaskBarGrid({
     [lastEndDay, firstStartDay]
   );
 
-  // Example: The date is 21/05/2025, Wednesday. The start date of this week is 19/05/2025, Monday
+  // Example: The date is 21/05/2025, Wednesday. The start date of this week is 18/05/2025, Sunday
   const getStartDateOfWeek = (date: Date) => {
     const d = new Date(date);
     let day = d.getDay();
-    if (day === 0) day = 7; // Sunday = 7
-    d.setDate(d.getDate() - day + 1);
+    d.setDate(d.getDate() - day);
     return d;
   };
 
@@ -99,10 +100,11 @@ export default function TaskBarGrid({
               ))}
             </g>
 
+            {/* Fill light gray color for holidays */}
             <g>
               {Array.from({ length: allDays.length + 1 }).map(
                 (_, index) =>
-                  ((index + 2) % 7 === 0 || (index + 1) % 7 === 0) && (
+                  (index % 7 === 0 || (index + 1) % 7 === 0) && (
                     <rect
                       key={index}
                       x={index * 40}
@@ -161,6 +163,7 @@ export default function TaskBarGrid({
                 index={index}
                 dayIndex={getDayIndex(task.start)}
                 handleUpdateTasks={handleUpdateTasks}
+                onStartEditingTask={onStartEditingTask}
               />
             ))}
           </g>

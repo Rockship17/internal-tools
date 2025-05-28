@@ -33,12 +33,11 @@ export default function CalendarBar({ data }: CalendarBarProps) {
     [lastEndDay, firstStartDay]
   );
 
-  // Example: The date is 21/05/2025, Wednesday. The start date of this week is 19/05/2025, Monday
+  // Example: The date is 21/05/2025, Wednesday. The start date of this week is 18/05/2025, Sunday
   const getStartDateOfWeek = (date: Date) => {
     const d = new Date(date);
     let day = d.getDay();
-    if (day === 0) day = 7; // Sunday = 7
-    d.setDate(d.getDate() - day + 1);
+    d.setDate(d.getDate() - day);
     return d;
   };
 
