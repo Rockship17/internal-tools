@@ -88,7 +88,10 @@ export default function CustomGanttChart() {
       <TaskEditDialog
         isDialogOpen={isEditTaskDialogOpen}
         editingTask={editingTask}
-        onClose={() => setIsEditTaskDialogOpen(false)}
+        onClose={() => {
+          setIsEditTaskDialogOpen(false);
+          setEditingTask(undefined);
+        }}
         handleUpdateTasks={handleUpdateTasks}
       />
 

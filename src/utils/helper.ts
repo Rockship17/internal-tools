@@ -3,7 +3,7 @@ export const calculateDateInGanttChart = (
   endDate?: Date,
   duration?: number
 ) => {
-  // If change in start date or duration => calculate end date based on start date and duration
+  // If change in duration => calculate end date based on old start date and new duration
   if (!endDate && startDate && duration) {
     let tempDuration = duration;
     const newEndDate = new Date(startDate);
@@ -34,8 +34,8 @@ export const calculateDateInGanttChart = (
     };
   }
 
+  // If change in start date or end date, keep old another date => calculate duration based on start date and end date
   if (startDate && endDate && !duration) {
-    // If change in end date, keep old start date => calculate duration based on new end date and old start date
     let newDuration = 0; // Remember: Duration is working day, means Monday to Friday
     let diffBetweenStartAndEnd =
       (endDate.getTime() - startDate.getTime()) / (24 * 60 * 60 * 1000);

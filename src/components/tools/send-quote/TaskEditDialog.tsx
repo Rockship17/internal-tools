@@ -59,7 +59,15 @@ export default function TaskEditDialog({
   });
 
   const handleSubmit = (data: TaskFormValues) => {
-    console.log(data);
+    if (currentTask) {
+      handleUpdateTasks(currentTask.id, {
+        name: data.name,
+        start: data.start,
+        end: data.end,
+        duration: data.duration,
+      });
+    }
+    onClose();
   };
 
   return (
@@ -100,12 +108,13 @@ export default function TaskEditDialog({
                         onSelect={(date) => {
                           field.onChange(date);
                           const formValues = form.getValues();
-                          console.log(
+                          form.setValue(
+                            'duration',
                             calculateDateInGanttChart(
-                              formValues.start,
-                              undefined,
-                              formValues.duration
-                            )
+                              date,
+                              formValues.end,
+                              undefined
+                            ).duration || 0
                           );
                         }}
                         {...field}
@@ -129,12 +138,13 @@ export default function TaskEditDialog({
                         onSelect={(date) => {
                           field.onChange(date);
                           const formValues = form.getValues();
-                          console.log(
+                          form.setValue(
+                            'duration',
                             calculateDateInGanttChart(
                               formValues.start,
                               date,
                               undefined
-                            )
+                            ).duration || 0
                           );
                         }}
                         {...field}
@@ -161,12 +171,13 @@ export default function TaskEditDialog({
                       onChange={(e) => {
                         field.onChange(e);
                         const formValues = form.getValues();
-                        console.log(
+                        form.setValue(
+                          'end',
                           calculateDateInGanttChart(
                             formValues.start,
                             undefined,
                             Number(e.target.value)
-                          )
+                          ).end
                         );
                       }}
                     />

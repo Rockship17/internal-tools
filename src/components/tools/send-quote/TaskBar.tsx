@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from 'react';
 
 import { CustomTask } from './CustomGanttChart';
+import { calculateDateInGanttChart } from '@/utils/helper';
 
 interface TaskBarProps {
   task: CustomTask;
@@ -19,6 +20,8 @@ export default function TaskBar({
   handleUpdateTasks,
   onStartEditingTask,
 }: TaskBarProps) {
+  const diff =
+    (task.end.getTime() - task.start.getTime()) / (24 * 60 * 60 * 1000) + 1;
   // Start: Moving task bar
   const [positionX, setPositionX] = useState(0);
   const dragStart = useRef<number | null>(null);
@@ -40,22 +43,26 @@ export default function TaskBar({
     const diff = Math.floor(posX / 40);
     const newStartDate = new Date(task.start);
     newStartDate.setDate(newStartDate.getDate() + diff);
-    const newEndDate = new Date(task.end);
-    newEndDate.setDate(newEndDate.getDate() + diff);
 
     // If newStartDate is Saturday, plus 2 to be Monday. If Sunday, plus 1 to be Monday
     if (newStartDate.getDay() === 6) {
       newStartDate.setDate(newStartDate.getDate() + 2);
-      newEndDate.setDate(newEndDate.getDate() + 2);
     } else if (newStartDate.getDay() === 0) {
       newStartDate.setDate(newStartDate.getDate() + 1);
-      newEndDate.setDate(newEndDate.getDate() + 1);
     }
 
-    handleUpdateTasks(task.id, {
-      start: newStartDate,
-      end: newEndDate,
-    });
+    const newEndDate = calculateDateInGanttChart(
+      newStartDate,
+      undefined,
+      task.duration
+    ).end;
+
+    if (newEndDate) {
+      handleUpdateTasks(task.id, {
+        start: newStartDate,
+        end: newEndDate,
+      });
+    }
   };
 
   const handleMouseDown = (e: React.MouseEvent) => {
@@ -80,8 +87,9 @@ export default function TaskBar({
   // Start: Moving left resize element to resize task bar
   const setPositionAfterMouseUpLeft = (posX: number) => {
     setLeftResizeX(Math.floor(posX / 40) * 40);
-
+    // TODO: When mouse up, new start date maybe bigger than end date, fix it
     let diff = Math.floor(posX / 40);
+
     const newStartDate = new Date(task.start);
     newStartDate.setDate(newStartDate.getDate() + diff);
 
@@ -95,10 +103,18 @@ export default function TaskBar({
       diff = diff + 1;
     }
 
-    handleUpdateTasks(task.id, {
-      start: newStartDate,
-      duration: task.duration - diff,
-    });
+    const newDuration = calculateDateInGanttChart(
+      newStartDate,
+      task.end,
+      undefined
+    ).duration;
+
+    if (newDuration) {
+      handleUpdateTasks(task.id, {
+        start: newStartDate,
+        duration: newDuration,
+      });
+    }
   };
 
   const handleMouseDownLeft = (e: React.MouseEvent) => {
@@ -111,12 +127,9 @@ export default function TaskBar({
   const handleMouseMoveLeft = (e: MouseEvent) => {
     if (!leftDragStart.current) return;
 
-    // task.duration * 40 - leftResizeX + rightResizeX is width of task bar. Prevent it to be smaller than 40 (one day)
+    // diff * 40 - leftResizeX + rightResizeX is width of task bar. Prevent it to be smaller than 40 (one day)
     // Because leftResizeX doesn't change during mouseMove event, use e.clientX - leftDragStart.current instead.
-    if (
-      task.duration * 40 - (e.clientX - leftDragStart.current) + rightResizeX >=
-      40
-    ) {
+    if (diff * 40 - (e.clientX - leftDragStart.current) + rightResizeX >= 40) {
       setLeftResizeX(e.clientX - leftDragStart.current);
     }
   };
@@ -147,10 +160,18 @@ export default function TaskBar({
       diff = diff - 2;
     }
 
-    handleUpdateTasks(task.id, {
-      end: newEndDate,
-      duration: task.duration + diff,
-    });
+    const newDuration = calculateDateInGanttChart(
+      task.start,
+      newEndDate,
+      undefined
+    ).duration;
+
+    if (newDuration) {
+      handleUpdateTasks(task.id, {
+        end: newEndDate,
+        duration: newDuration,
+      });
+    }
   };
 
   const handleMouseDownRight = (e: React.MouseEvent) => {
@@ -163,12 +184,9 @@ export default function TaskBar({
   const handleMouseMoveRight = (e: MouseEvent) => {
     if (!rightDragStart.current) return;
 
-    // task.duration * 40 - leftResizeX + rightResizeX is width of task bar. Prevent it to be smaller than 40 (one day)
+    // diff * 40 - leftResizeX + rightResizeX is width of task bar. Prevent it to be smaller than 40 (one day)
     // Because rightResizeX doesn't change during mouseMove event, use e.clientX - rightDragStart.current instead.
-    if (
-      task.duration * 40 - leftResizeX + e.clientX - rightDragStart.current >=
-      40
-    ) {
+    if (diff * 40 - leftResizeX + e.clientX - rightDragStart.current >= 40) {
       setRightResizeX(e.clientX - rightDragStart.current);
     }
   };
@@ -191,7 +209,7 @@ export default function TaskBar({
         <g>
           <rect
             x={dayIndex * 40}
-            width={task.duration * 40 - leftResizeX + rightResizeX}
+            width={diff * 40 - leftResizeX + rightResizeX}
             y={index * 40 + 8}
             height='24'
             ry='3'
@@ -228,9 +246,7 @@ export default function TaskBar({
             that affects the taskbar's position => affects the position of right resize, too. Therefore, we need to
             subtract leftResizeX here */}
             <rect
-              x={
-                (dayIndex + task.duration) * 40 - 9 - leftResizeX + rightResizeX
-              }
+              x={(dayIndex + diff) * 40 - 9 - leftResizeX + rightResizeX}
               y={index * 40 + 9}
               width='8'
               height='22'
